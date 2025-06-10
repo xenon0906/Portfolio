@@ -22,5 +22,5 @@ The portfolio consists of multiple sections including:
 
 No JavaScript or frameworks are used in this version.
 
-## 📂 Folder Structure
+
 
