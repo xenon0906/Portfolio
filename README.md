@@ -1,33 +1,26 @@
-# 💼 Personal Portfolio
+# 🌐 HTML & CSS Portfolio Website
 
-This is my personal portfolio website built with HTML, CSS, and JavaScript. It showcases my projects, skills, and contact information.
+This is a static personal portfolio website built using **HTML5** and **CSS3**. It is designed to be responsive, accessible, and visually clean, making it suitable for showcasing a developer’s profile, experience, and projects.
 
-## 🚀 Features
+## 🖼️ Overview
 
-- 🧑 About Me section
-- 🛠️ Skills overview
-- 📁 Projects showcase
-- 📫 Contact information
-- 🌙 Light and dark mode toggle (if implemented)
-- 🎨 Responsive design for mobile and desktop
+The portfolio consists of multiple sections including:
 
-## 📸 Screenshots
+- **Header** with navigation and social media icons
+- **Hero section** with an introduction tagline
+- **About** section detailing interests and skills
+- **Experience** section with a timeline layout
+- **Projects** section to showcase completed work
+- **Contact** area for reaching out
 
-_Add a few screenshots here if you want_
+## 🛠️ Technologies Used
 
-## 🧰 Tech Stack
+- **HTML5** — Semantic structure
+- **CSS3** — Styling and layout
+- **Flexbox/Grid** — For responsive design
+- **Media Queries** — For mobile responsiveness
 
-- HTML5
-- CSS3
-- JavaScript
-- [Optional: Bootstrap, Tailwind, React, etc.]
+No JavaScript or frameworks are used in this version.
 
 ## 📂 Folder Structure
 
-```bash
-portfolio/
-├── index.html
-├── style.css
-├── script.js
-├── images/
-└── README.md
