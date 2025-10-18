@@ -50,11 +50,11 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-32 px-4 relative overflow-hidden">
+    <section id="contact" className="py-16 px-4 relative overflow-hidden">
       <Toaster />
 
       {/* Section divider top */}
-      <div className="section-divider mb-32" />
+      <div className="section-divider mb-16" />
 
       {/* Background decoration */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent pointer-events-none" />
