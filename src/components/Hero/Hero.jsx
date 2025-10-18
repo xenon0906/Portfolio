@@ -29,16 +29,45 @@ export const Hero = () => {
   };
 
   return (
-    <section id="hero" className="min-h-screen relative flex items-center justify-center overflow-hidden py-20 px-4">
+    <section id="hero" className="min-h-screen relative flex items-center justify-center overflow-hidden py-32 px-4">
       {/* Gradient Background */}
-      <div className="absolute inset-0 gradient-mesh opacity-10 dark:opacity-5" />
+      <div className="absolute inset-0 gradient-mesh opacity-30 dark:opacity-15" />
+
+      {/* Animated gradient orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+        />
+      </div>
 
       {/* Floating geometric shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-32 h-32 border border-indigo-accent/20 rounded-full"
+            className="absolute w-32 h-32 border-2 border-indigo-accent/30 rounded-full backdrop-blur-sm"
             initial={{ x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%` }}
             animate={{
               x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
@@ -60,29 +89,17 @@ export const Hero = () => {
         initial="hidden"
         animate="visible"
       >
-        {/* Avatar */}
-        {!isLoading && profile && (
-          <motion.div variants={itemVariants} className="mb-8">
-            <motion.img
-              src={profile.avatar_url}
-              alt={profile.name}
-              className="w-32 h-32 rounded-full mx-auto border-4 border-indigo-accent shadow-xl"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            />
-          </motion.div>
-        )}
 
         {/* Name */}
         <motion.h1
           variants={itemVariants}
-          className="text-5xl md:text-7xl font-bold mb-4 text-charcoal dark:text-off-white"
+          className="text-6xl md:text-8xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 dark:from-slate-100 dark:via-purple-200 dark:to-slate-100"
         >
-          {!isLoading && profile ? profile.name : 'Loading...'}
+          Siddhanth Kunwar
         </motion.h1>
 
         {/* Typewriter effect for roles */}
-        <motion.div variants={itemVariants} className="mb-6">
+        <motion.div variants={itemVariants} className="mb-8">
           <TypeAnimation
             sequence={[
               'Full Stack Developer',
@@ -96,73 +113,77 @@ export const Hero = () => {
             ]}
             wrapper="h2"
             speed={50}
-            className="text-2xl md:text-3xl text-gradient font-semibold"
+            className="text-3xl md:text-4xl text-gradient font-bold"
             repeat={Infinity}
           />
         </motion.div>
 
         {/* Bio */}
-        {!isLoading && profile && (
-          <motion.p
-            variants={itemVariants}
-            className="text-lg md:text-xl text-charcoal/70 dark:text-off-white/70 max-w-2xl mx-auto mb-6"
-          >
-            {profile.bio || 'Building amazing things with code.'}
-          </motion.p>
-        )}
+        <motion.p
+          variants={itemVariants}
+          className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed"
+        >
+          Building amazing things with code. Passionate about technology and innovation.
+        </motion.p>
 
         {/* Location */}
-        {!isLoading && profile?.location && (
-          <motion.div variants={itemVariants} className="flex items-center justify-center gap-2 mb-8 text-charcoal/60 dark:text-off-white/60">
-            <MapPin className="w-4 h-4" />
-            <span>{profile.location}</span>
-          </motion.div>
-        )}
+        <motion.div variants={itemVariants} className="flex items-center justify-center gap-2 mb-12 text-slate-500 dark:text-slate-400 text-lg">
+          <MapPin className="w-5 h-5" />
+          <span>Greater Noida, India</span>
+        </motion.div>
 
         {/* Social Links */}
-        <motion.div variants={itemVariants} className="flex gap-4 justify-center mb-12">
+        <motion.div variants={itemVariants} className="flex gap-6 justify-center mb-16">
           <motion.a
             href={`https://github.com/xenon0906`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 bg-charcoal/10 dark:bg-off-white/10 rounded-full hover:bg-indigo-accent hover:text-white transition-colors"
-            whileHover={{ scale: 1.1, rotate: 5 }}
+            className="p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-700"
+            whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Github className="w-6 h-6" />
+            <Github className="w-7 h-7" />
           </motion.a>
           <motion.a
             href={`https://linkedin.com/in/syd090605`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 bg-charcoal/10 dark:bg-off-white/10 rounded-full hover:bg-indigo-accent hover:text-white transition-colors"
-            whileHover={{ scale: 1.1, rotate: 5 }}
+            className="p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-700"
+            whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Linkedin className="w-6 h-6" />
+            <Linkedin className="w-7 h-7" />
           </motion.a>
           <motion.a
             href="#contact"
-            className="p-3 bg-charcoal/10 dark:bg-off-white/10 rounded-full hover:bg-indigo-accent hover:text-white transition-colors"
-            whileHover={{ scale: 1.1, rotate: 5 }}
+            className="p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-700"
+            whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Mail className="w-6 h-6" />
+            <Mail className="w-7 h-7" />
           </motion.a>
         </motion.div>
 
-        {/* GitHub Stats Cards */}
-        <GitHubStats stats={stats} isLoading={isLoading} />
 
         {/* CTA Button */}
-        <motion.div variants={itemVariants} className="mt-12">
+        <motion.div variants={itemVariants} className="mt-16">
           <motion.a
-            href="#projects"
-            className="inline-block px-8 py-4 bg-gradient-to-r from-indigo-accent to-emerald text-white font-semibold rounded-full shadow-lg"
-            whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(99, 102, 241, 0.3)' }}
+            href="/projects"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = '/projects';
+            }}
+            className="group relative inline-block px-12 py-5 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-purple-500/50 bg-[length:200%_auto] transition-all overflow-hidden shine-effect cursor-pointer"
+            whileHover={{ scale: 1.05, backgroundPosition: 'right center' }}
             whileTap={{ scale: 0.95 }}
           >
-            View My Work
+            <span className="relative z-10">View My Work</span>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600"
+              initial={{ x: '100%' }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
           </motion.a>
         </motion.div>
       </motion.div>

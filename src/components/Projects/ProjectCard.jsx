@@ -48,23 +48,26 @@ export const ProjectCard = ({ repo }) => {
         glareBorderRadius="1rem"
         className="h-full"
       >
-        <div className="glass-effect p-6 rounded-2xl h-full flex flex-col group hover:border-indigo-accent/50 transition-all duration-300">
+        <div className="relative glass-effect p-7 rounded-3xl h-full flex flex-col group hover:shadow-2xl hover:shadow-indigo-500/20 transition-all duration-500 border-2 border-transparent hover:border-indigo-500/30 overflow-hidden">
+          {/* Gradient overlay on hover */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
           {/* Header */}
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-5 relative z-10">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-xl font-bold text-charcoal dark:text-off-white group-hover:text-gradient transition-colors">
+                <h3 className="text-xl font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-gradient transition-all duration-300">
                   {repo.name}
                 </h3>
                 {isRecent && (
-                  <span className="flex items-center gap-1 px-2 py-1 bg-emerald/20 text-emerald text-xs font-medium rounded-full">
-                    <div className="w-1.5 h-1.5 bg-emerald rounded-full animate-pulse" />
+                  <span className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/40 shadow-lg shadow-emerald-500/20">
+                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                     Live
                   </span>
                 )}
               </div>
               {isRecent && (
-                <span className="text-xs text-charcoal/60 dark:text-off-white/60">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
                   Updated {formatDistanceToNow(new Date(repo.updated_at), { addSuffix: true })}
                 </span>
               )}
@@ -72,17 +75,18 @@ export const ProjectCard = ({ repo }) => {
           </div>
 
           {/* Description */}
-          <p className="text-charcoal/70 dark:text-off-white/70 text-sm mb-4 flex-1 line-clamp-3">
+          <p className="relative z-10 text-slate-600 dark:text-slate-300 text-base mb-5 flex-1 line-clamp-3 leading-relaxed">
             {repo.description || 'No description available.'}
           </p>
 
           {/* Technologies/Topics */}
           {repo.topics && repo.topics.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {repo.topics.slice(0, 3).map((topic) => (
+            <div className="relative z-10 flex flex-wrap gap-2 mb-5">
+              {repo.topics.slice(0, 3).map((topic, index) => (
                 <span
                   key={topic}
-                  className="px-2 py-1 bg-charcoal/10 dark:bg-off-white/10 text-xs rounded-full text-charcoal/80 dark:text-off-white/80"
+                  className="px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-700 dark:to-slate-600 text-xs font-semibold rounded-lg text-indigo-700 dark:text-purple-300 border border-indigo-200 dark:border-slate-500 hover:scale-105 transition-transform shadow-sm"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {topic}
                 </span>
@@ -91,25 +95,25 @@ export const ProjectCard = ({ repo }) => {
           )}
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-4 border-t border-charcoal/10 dark:border-off-white/10">
+          <div className="relative z-10 flex items-center justify-between pt-5 border-t-2 border-slate-200 dark:border-slate-700 group-hover:border-indigo-500/30 transition-colors">
             {/* Stats */}
-            <div className="flex items-center gap-4 text-sm text-charcoal/60 dark:text-off-white/60">
+            <div className="flex items-center gap-4 text-sm font-medium text-slate-600 dark:text-slate-400">
               {primaryLanguage && (
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1.5 group/lang">
                   <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: languageColor }}
+                    className="w-3 h-3 rounded-full shadow-md group-hover/lang:scale-125 transition-transform"
+                    style={{ backgroundColor: languageColor, boxShadow: `0 0 12px ${languageColor}60` }}
                   />
-                  <span>{primaryLanguage}</span>
+                  <span className="font-semibold">{primaryLanguage}</span>
                 </div>
               )}
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4" />
-                <span>{repo.stargazers_count}</span>
+              <div className="flex items-center gap-1.5 group/star">
+                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 group-hover/star:scale-125 transition-transform" />
+                <span className="font-semibold">{repo.stargazers_count}</span>
               </div>
-              <div className="flex items-center gap-1">
-                <GitFork className="w-4 h-4" />
-                <span>{repo.forks_count}</span>
+              <div className="flex items-center gap-1.5 group/fork">
+                <GitFork className="w-4 h-4 group-hover/fork:scale-125 transition-transform" />
+                <span className="font-semibold">{repo.forks_count}</span>
               </div>
             </div>
 
@@ -119,8 +123,8 @@ export const ProjectCard = ({ repo }) => {
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 hover:bg-charcoal/10 dark:hover:bg-off-white/10 rounded-full transition-colors"
-                whileHover={{ scale: 1.1 }}
+                className="p-2.5 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
+                whileHover={{ scale: 1.15, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Github className="w-4 h-4" />
@@ -130,8 +134,8 @@ export const ProjectCard = ({ repo }) => {
                   href={repo.homepage}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 hover:bg-charcoal/10 dark:hover:bg-off-white/10 rounded-full transition-colors"
-                  whileHover={{ scale: 1.1 }}
+                  className="p-2.5 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
+                  whileHover={{ scale: 1.15, rotate: -5 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <ExternalLink className="w-4 h-4" />

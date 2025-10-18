@@ -5,21 +5,21 @@ import { Star, GitFork, Users, BookOpen } from 'lucide-react';
 
 const StatCard = ({ icon: Icon, label, value, delay }) => (
   <motion.div
-    className="glass-effect p-6 rounded-2xl"
+    className="glass-effect p-8 rounded-3xl hover:shadow-2xl transition-all"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, type: 'spring', stiffness: 100 }}
-    whileHover={{ scale: 1.05, y: -5 }}
+    whileHover={{ scale: 1.05, y: -8 }}
   >
-    <div className="flex items-center justify-center mb-3">
-      <div className="p-3 bg-gradient-to-r from-indigo-accent to-emerald rounded-full">
-        <Icon className="w-6 h-6 text-white" />
+    <div className="flex items-center justify-center mb-4">
+      <div className="p-4 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl shadow-xl">
+        <Icon className="w-7 h-7 text-white" />
       </div>
     </div>
-    <div className="text-3xl font-bold text-charcoal dark:text-off-white mb-2">
+    <div className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 mb-2">
       <CountUp end={value || 0} duration={2.5} delay={delay} />
     </div>
-    <div className="text-sm text-charcoal/60 dark:text-off-white/60 font-medium">
+    <div className="text-sm text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider">
       {label}
     </div>
   </motion.div>
@@ -41,7 +41,7 @@ export const GitHubStats = ({ stats, isLoading }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
       <StatCard
         icon={BookOpen}
         label="Repositories"

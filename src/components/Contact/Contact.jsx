@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Github, Linkedin, Mail } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+import googleSheetsService from '../../services/GoogleSheetsService';
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -22,35 +23,53 @@ export const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission (replace with actual Google Forms or backend integration)
-    setTimeout(() => {
-      toast.success('Message sent successfully! I\'ll get back to you soon.', {
+    try {
+      const result = await googleSheetsService.submitForm(formData);
+
+      if (result.success) {
+        toast.success(
+          result.fallback
+            ? 'Opening your email client...'
+            : 'Message sent successfully! I\'ll get back to you soon.',
+          {
+            duration: 4000,
+            position: 'bottom-center',
+            icon: '✉️',
+          }
+        );
+        setFormData({ name: '', email: '', message: '' });
+      }
+    } catch (error) {
+      toast.error(error.message || 'Failed to send message. Please try again.', {
         duration: 4000,
         position: 'bottom-center',
       });
-      setFormData({ name: '', email: '', message: '' });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
-    <section id="contact" className="py-20 px-4 relative overflow-hidden">
+    <section id="contact" className="py-32 px-4 relative overflow-hidden">
       <Toaster />
 
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald/5 to-transparent" />
+      {/* Section divider top */}
+      <div className="section-divider mb-32" />
 
-      <div className="max-w-4xl mx-auto relative z-10">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-charcoal dark:text-off-white">
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-slate-100">
             Get In <span className="text-gradient">Touch</span>
           </h2>
-          <p className="text-lg text-charcoal/70 dark:text-off-white/70">
+          <p className="text-xl text-slate-600 dark:text-slate-300 leading-relaxed">
             Have a project in mind? Let's work together!
           </p>
         </motion.div>
@@ -67,7 +86,7 @@ export const Contact = () => {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium mb-2 text-charcoal dark:text-off-white"
+                  className="block text-sm font-bold mb-2 text-slate-800 dark:text-slate-200"
                 >
                   Name
                 </label>
@@ -78,7 +97,7 @@ export const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-charcoal/5 dark:bg-off-white/5 border border-charcoal/10 dark:border-off-white/10 rounded-lg focus:ring-2 focus:ring-indigo-accent focus:border-transparent outline-none transition-all text-charcoal dark:text-off-white"
+                  className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
                   placeholder="Your name"
                 />
               </div>
@@ -86,7 +105,7 @@ export const Contact = () => {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium mb-2 text-charcoal dark:text-off-white"
+                  className="block text-sm font-bold mb-2 text-slate-800 dark:text-slate-200"
                 >
                   Email
                 </label>
@@ -97,7 +116,7 @@ export const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-charcoal/5 dark:bg-off-white/5 border border-charcoal/10 dark:border-off-white/10 rounded-lg focus:ring-2 focus:ring-indigo-accent focus:border-transparent outline-none transition-all text-charcoal dark:text-off-white"
+                  className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -105,7 +124,7 @@ export const Contact = () => {
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium mb-2 text-charcoal dark:text-off-white"
+                  className="block text-sm font-bold mb-2 text-slate-800 dark:text-slate-200"
                 >
                   Message
                 </label>
@@ -116,7 +135,7 @@ export const Contact = () => {
                   onChange={handleChange}
                   required
                   rows={5}
-                  className="w-full px-4 py-3 bg-charcoal/5 dark:bg-off-white/5 border border-charcoal/10 dark:border-off-white/10 rounded-lg focus:ring-2 focus:ring-indigo-accent focus:border-transparent outline-none transition-all resize-none text-charcoal dark:text-off-white"
+                  className="w-full px-5 py-3.5 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
                   placeholder="Your message..."
                 />
               </div>
@@ -124,8 +143,8 @@ export const Contact = () => {
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-3 bg-gradient-to-r from-indigo-accent to-emerald text-white font-semibold rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                whileHover={{ scale: 1.02 }}
+                className="w-full px-6 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-indigo-500/50 bg-[length:200%_auto] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                whileHover={{ scale: 1.02, backgroundPosition: 'right center' }}
                 whileTap={{ scale: 0.98 }}
               >
                 {isSubmitting ? (
@@ -133,7 +152,7 @@ export const Contact = () => {
                 ) : (
                   <>
                     Send Message
-                    <Send className="w-4 h-4" />
+                    <Send className="w-5 h-5" />
                   </>
                 )}
               </motion.button>
@@ -148,10 +167,10 @@ export const Contact = () => {
             className="flex flex-col justify-center space-y-8"
           >
             <div>
-              <h3 className="text-2xl font-bold mb-6 text-charcoal dark:text-off-white">
+              <h3 className="text-3xl font-extrabold mb-6 text-slate-900 dark:text-slate-100">
                 Let's Connect
               </h3>
-              <p className="text-charcoal/70 dark:text-off-white/70 mb-8">
+              <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
                 I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
               </p>
             </div>
@@ -161,15 +180,15 @@ export const Contact = () => {
                 href="https://github.com/xenon0906"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 glass-effect rounded-lg hover:border-indigo-accent/50 transition-all group"
-                whileHover={{ x: 5 }}
+                className="flex items-center gap-4 p-5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:shadow-xl transition-all border border-slate-200 dark:border-slate-700 hover:border-indigo-500"
+                whileHover={{ x: 8, scale: 1.02 }}
               >
-                <div className="p-3 bg-gradient-to-r from-indigo-accent to-emerald rounded-lg">
-                  <Github className="w-5 h-5 text-white" />
+                <div className="p-4 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl shadow-lg">
+                  <Github className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-charcoal dark:text-off-white">GitHub</p>
-                  <p className="text-sm text-charcoal/60 dark:text-off-white/60">@xenon0906</p>
+                  <p className="font-bold text-lg text-slate-900 dark:text-slate-100">GitHub</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">@xenon0906</p>
                 </div>
               </motion.a>
 
@@ -177,28 +196,28 @@ export const Contact = () => {
                 href="https://linkedin.com/in/syd090605"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 glass-effect rounded-lg hover:border-indigo-accent/50 transition-all group"
-                whileHover={{ x: 5 }}
+                className="flex items-center gap-4 p-5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:shadow-xl transition-all border border-slate-200 dark:border-slate-700 hover:border-indigo-500"
+                whileHover={{ x: 8, scale: 1.02 }}
               >
-                <div className="p-3 bg-gradient-to-r from-indigo-accent to-emerald rounded-lg">
-                  <Linkedin className="w-5 h-5 text-white" />
+                <div className="p-4 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl shadow-lg">
+                  <Linkedin className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-charcoal dark:text-off-white">LinkedIn</p>
-                  <p className="text-sm text-charcoal/60 dark:text-off-white/60">syd090605</p>
+                  <p className="font-bold text-lg text-slate-900 dark:text-slate-100">LinkedIn</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">syd090605</p>
                 </div>
               </motion.a>
 
               <motion.div
-                className="flex items-center gap-4 p-4 glass-effect rounded-lg"
-                whileHover={{ x: 5 }}
+                className="flex items-center gap-4 p-5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl border border-slate-200 dark:border-slate-700"
+                whileHover={{ x: 8, scale: 1.02 }}
               >
-                <div className="p-3 bg-gradient-to-r from-indigo-accent to-emerald rounded-lg">
-                  <Mail className="w-5 h-5 text-white" />
+                <div className="p-4 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl shadow-lg">
+                  <Mail className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="font-semibold text-charcoal dark:text-off-white">Email</p>
-                  <p className="text-sm text-charcoal/60 dark:text-off-white/60">Contact via form</p>
+                  <p className="font-bold text-lg text-slate-900 dark:text-slate-100">Email</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Contact via form</p>
                 </div>
               </motion.div>
             </div>

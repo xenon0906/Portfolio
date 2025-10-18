@@ -2,7 +2,7 @@ import { Octokit } from 'octokit';
 
 const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'xenon0906';
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+const CACHE_DURATION = 30 * 1000; // 30 seconds in milliseconds
 const STORAGE_KEYS = {
   PROFILE: 'github_profile',
   REPOS: 'github_repos',
@@ -34,9 +34,15 @@ class GitHubAutoSync {
     }
   }
 
-  // Initialize auto-sync with 5-minute interval
+  // Initialize auto-sync with 30-second interval
   startAutoSync() {
-    // Initial sync
+    // Try to use cached data first for instant load
+    const cachedData = this.getCachedData();
+    if (cachedData && cachedData.profile) {
+      this.notifyListeners(cachedData);
+    }
+
+    // Then sync in background
     this.syncAll();
 
     // Set up interval for auto-sync
@@ -44,7 +50,7 @@ class GitHubAutoSync {
       this.syncAll();
     }, CACHE_DURATION);
 
-    console.log('GitHub auto-sync started (5-minute intervals)');
+    console.log('GitHub auto-sync started (30-second intervals)');
   }
 
   // Stop auto-sync
