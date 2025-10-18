@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Github, ExternalLink, Star, GitFork, Calendar, Code, FileText } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -21,7 +21,81 @@ const LANGUAGE_COLORS = {
   CSS: '#563d7c',
 };
 
+// Function to convert markdown to plain text
+const markdownToPlainText = (markdown) => {
+  if (!markdown) return '';
+
+  return markdown
+    // Remove code blocks
+    .replace(/```[\s\S]*?```/g, '')
+    // Remove inline code
+    .replace(/`([^`]+)`/g, '$1')
+    // Remove headers
+    .replace(/#{1,6}\s+/g, '')
+    // Remove bold/italic
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')
+    .replace(/(\*|_)(.*?)\1/g, '$2')
+    // Remove links but keep text
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // Remove images
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')
+    // Remove horizontal rules
+    .replace(/^[-*_]{3,}$/gm, '')
+    // Remove list markers
+    .replace(/^\s*[-*+]\s+/gm, '• ')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    // Remove blockquotes
+    .replace(/^\s*>\s+/gm, '')
+    // Clean up extra whitespace
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+};
+
 export const ProjectModal = ({ project, isOpen, onClose }) => {
+  const [readme, setReadme] = useState('');
+  const [isLoadingReadme, setIsLoadingReadme] = useState(false);
+
+  useEffect(() => {
+    if (!project || !isOpen) {
+      setReadme('');
+      return;
+    }
+
+    const fetchReadme = async () => {
+      setIsLoadingReadme(true);
+      try {
+        // Try main branch first
+        const mainResponse = await fetch(
+          `https://raw.githubusercontent.com/${project.full_name}/main/README.md`
+        );
+
+        if (mainResponse.ok) {
+          const text = await mainResponse.text();
+          setReadme(markdownToPlainText(text));
+        } else {
+          // Try master branch
+          const masterResponse = await fetch(
+            `https://raw.githubusercontent.com/${project.full_name}/master/README.md`
+          );
+
+          if (masterResponse.ok) {
+            const text = await masterResponse.text();
+            setReadme(markdownToPlainText(text));
+          } else {
+            setReadme('');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching README:', error);
+        setReadme('');
+      } finally {
+        setIsLoadingReadme(false);
+      }
+    };
+
+    fetchReadme();
+  }, [project, isOpen]);
+
   if (!project) return null;
 
   const languageColor = LANGUAGE_COLORS[project.language] || '#6366f1';
@@ -82,7 +156,7 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
               {/* Header */}
               <div className="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 p-6 flex items-start justify-between z-10">
                 <div className="flex-1 pr-4">
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-3">
                     <h2 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100">
                       {project.name}
                     </h2>
@@ -93,9 +167,6 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
                       </span>
                     )}
                   </div>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    {project.description || 'No description available'}
-                  </p>
                 </div>
                 <button
                   onClick={onClose}
@@ -167,18 +238,34 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
                   </div>
                 )}
 
-                {/* Description Section */}
-                {project.description && (
-                  <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">About This Project</h3>
-                    </div>
-                    <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
-                      {project.description}
-                    </p>
+                {/* About This Project - README */}
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">About This Project</h3>
                   </div>
-                )}
+                  {isLoadingReadme ? (
+                    <div className="space-y-3 animate-pulse bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-5/6" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-4/6" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4" />
+                    </div>
+                  ) : readme ? (
+                    <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+                      <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+                        {readme}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+                      <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                        {project.description || 'No README or description available for this project. Visit the GitHub repository to learn more.'}
+                      </p>
+                    </div>
+                  )}
+                </div>
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-6">

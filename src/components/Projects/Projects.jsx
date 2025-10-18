@@ -11,8 +11,8 @@ export const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Memoize top 6 projects to avoid recalculation
-  const topProjects = useMemo(() => repos?.slice(0, 6) || [], [repos]);
+  // Memoize all projects to avoid recalculation
+  const displayProjects = useMemo(() => repos || [], [repos]);
 
   const handleProjectClick = useCallback((project) => {
     setSelectedProject(project);
@@ -79,9 +79,9 @@ export const Projects = () => {
 
         {/* Projects Grid */}
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="glass-effect p-6 rounded-2xl animate-pulse">
+              <div key={i} className="glass-effect p-6 rounded-2xl animate-pulse h-full">
                 <div className="h-6 bg-charcoal/10 dark:bg-off-white/10 rounded mb-4" />
                 <div className="h-16 bg-charcoal/10 dark:bg-off-white/10 rounded mb-4" />
                 <div className="h-4 bg-charcoal/10 dark:bg-off-white/10 rounded mb-2" />
@@ -91,14 +91,14 @@ export const Projects = () => {
           </div>
         ) : (
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {topProjects.map((repo) => (
-              <div key={repo.id} onClick={() => handleProjectClick(repo)} className="cursor-pointer">
+            {displayProjects.map((repo) => (
+              <div key={repo.id} onClick={() => handleProjectClick(repo)} className="cursor-pointer h-full">
                 <ProjectCard repo={repo} />
               </div>
             ))}
