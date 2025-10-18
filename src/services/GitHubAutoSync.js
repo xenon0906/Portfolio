@@ -2,7 +2,7 @@ import { Octokit } from 'octokit';
 
 const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'xenon0906';
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-const CACHE_DURATION = 30 * 1000; // 30 seconds in milliseconds
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds (was 30 seconds)
 const STORAGE_KEYS = {
   PROFILE: 'github_profile',
   REPOS: 'github_repos',
@@ -50,7 +50,7 @@ class GitHubAutoSync {
       this.syncAll();
     }, CACHE_DURATION);
 
-    console.log('GitHub auto-sync started (30-second intervals)');
+    console.log('GitHub auto-sync started (5-minute intervals)');
   }
 
   // Stop auto-sync
@@ -86,11 +86,14 @@ class GitHubAutoSync {
     try {
       console.log('Starting GitHub data sync...');
 
-      const [profile, repos, contributions] = await Promise.all([
+      // Fetch profile and repos in parallel
+      const [profile, repos] = await Promise.all([
         this.fetchProfile(),
-        this.fetchRepositories(),
-        this.fetchContributions()
+        this.fetchRepositories()
       ]);
+
+      // Fetch contributions after repos (needs repos data)
+      const contributions = await this.fetchContributions(repos);
 
       const languages = this.calculateLanguageStats(repos);
       const stats = this.calculateStats(profile, repos);
@@ -155,32 +158,43 @@ class GitHubAutoSync {
         sort: 'updated'
       });
 
-      // Filter out forks if needed and add additional data
-      const enrichedRepos = await Promise.all(
-        data.map(async (repo) => {
-          try {
-            // Get additional language data
-            const { data: languages } = await this.octokit.rest.repos.listLanguages({
-              owner: GITHUB_USERNAME,
-              repo: repo.name
-            });
+      // Just add calculated fields, don't fetch language data for each repo (too slow)
+      const enrichedRepos = data.map((repo) => ({
+        ...repo,
+        // Use the primary language from the repo object instead of fetching all languages
+        language: repo.language,
+        featuredScore: this.calculateFeaturedScore(repo),
+        isRecentlyUpdated: this.isRecentlyUpdated(repo.updated_at)
+      }));
 
-            return {
-              ...repo,
-              languages,
-              featuredScore: this.calculateFeaturedScore(repo),
-              isRecentlyUpdated: this.isRecentlyUpdated(repo.updated_at)
-            };
-          } catch (error) {
-            return {
-              ...repo,
-              languages: {},
-              featuredScore: this.calculateFeaturedScore(repo),
-              isRecentlyUpdated: this.isRecentlyUpdated(repo.updated_at)
-            };
-          }
-        })
-      );
+      // Only fetch detailed language data for top 10 repos (for language stats)
+      const topRepos = enrichedRepos
+        .sort((a, b) => b.featuredScore - a.featuredScore)
+        .slice(0, 10);
+
+      const detailedLanguagePromises = topRepos.map(async (repo) => {
+        try {
+          const { data: languages } = await this.octokit.rest.repos.listLanguages({
+            owner: GITHUB_USERNAME,
+            repo: repo.name
+          });
+          return { name: repo.name, languages };
+        } catch (error) {
+          return { name: repo.name, languages: {} };
+        }
+      });
+
+      const detailedLanguages = await Promise.all(detailedLanguagePromises);
+
+      // Add language data to matching repos
+      const languageMap = new Map(detailedLanguages.map(item => [item.name, item.languages]));
+      enrichedRepos.forEach(repo => {
+        if (languageMap.has(repo.name)) {
+          repo.languages = languageMap.get(repo.name);
+        } else {
+          repo.languages = {};
+        }
+      });
 
       return enrichedRepos;
     } catch (error) {
@@ -189,31 +203,37 @@ class GitHubAutoSync {
     }
   }
 
-  // Fetch contribution data (simplified version)
-  async fetchContributions() {
+  // Fetch contribution data (simplified version - uses cached repos to avoid extra fetching)
+  async fetchContributions(repos) {
     try {
-      // GitHub doesn't have a direct API for contribution graph
-      // We'll calculate based on recent commits
-      const repos = await this.fetchRepositories();
+      // Use passed repos to avoid fetching again
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
       let totalContributions = 0;
 
-      for (const repo of repos.slice(0, 10)) { // Check top 10 repos
+      // Only check top 5 most active repos for speed
+      const topActiveRepos = repos
+        .filter(r => r.isRecentlyUpdated)
+        .slice(0, 5);
+
+      const commitPromises = topActiveRepos.map(async (repo) => {
         try {
           const { data: commits } = await this.octokit.rest.repos.listCommits({
             owner: GITHUB_USERNAME,
             repo: repo.name,
             since: thirtyDaysAgo.toISOString(),
-            author: GITHUB_USERNAME
+            author: GITHUB_USERNAME,
+            per_page: 100
           });
-          totalContributions += commits.length;
+          return commits.length;
         } catch (error) {
-          // Skip if repo has no commits or is inaccessible
-          continue;
+          return 0;
         }
-      }
+      });
+
+      const commitCounts = await Promise.all(commitPromises);
+      totalContributions = commitCounts.reduce((sum, count) => sum + count, 0);
 
       return {
         last30Days: totalContributions,

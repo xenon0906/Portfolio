@@ -62,6 +62,21 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
     }
 
     const fetchReadme = async () => {
+      // Check cache first
+      const cacheKey = `readme_${project.full_name}`;
+      const cachedReadme = localStorage.getItem(cacheKey);
+      const cacheTime = localStorage.getItem(`${cacheKey}_time`);
+
+      // Use cache if it's less than 1 hour old
+      if (cachedReadme && cacheTime) {
+        const age = Date.now() - parseInt(cacheTime);
+        if (age < 60 * 60 * 1000) { // 1 hour
+          setReadme(cachedReadme);
+          setIsLoadingReadme(false);
+          return;
+        }
+      }
+
       setIsLoadingReadme(true);
       try {
         // Try main branch first
@@ -71,7 +86,11 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
 
         if (mainResponse.ok) {
           const text = await mainResponse.text();
-          setReadme(markdownToPlainText(text));
+          const plainText = markdownToPlainText(text);
+          setReadme(plainText);
+          // Cache the result
+          localStorage.setItem(cacheKey, plainText);
+          localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
         } else {
           // Try master branch
           const masterResponse = await fetch(
@@ -80,7 +99,11 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
 
           if (masterResponse.ok) {
             const text = await masterResponse.text();
-            setReadme(markdownToPlainText(text));
+            const plainText = markdownToPlainText(text);
+            setReadme(plainText);
+            // Cache the result
+            localStorage.setItem(cacheKey, plainText);
+            localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
           } else {
             setReadme('');
           }
