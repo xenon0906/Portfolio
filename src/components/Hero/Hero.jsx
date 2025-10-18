@@ -155,7 +155,11 @@ export const Hero = () => {
             <Linkedin className="w-7 h-7" />
           </motion.a>
           <motion.a
-            href="#contact"
+            href="/contact"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = '/contact';
+            }}
             className="p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-700"
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}

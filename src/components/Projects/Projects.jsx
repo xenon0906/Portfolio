@@ -54,14 +54,14 @@ export const Projects = () => {
             Featured <span className="text-gradient">Projects</span>
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Auto-updated from GitHub every 5 minutes. Projects are ranked by stars, forks, and recent activity.
+            Showcasing my most impactful work. Projects are ranked by stars, forks, and recent activity.
           </p>
 
           {/* Sync Status */}
           <div className="mt-8 flex items-center justify-center gap-6">
             <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full border border-slate-200 dark:border-slate-700">
               <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">Last synced: {getTimeSinceSync()}</span>
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">Live data from GitHub</span>
             </div>
 
             <motion.button

@@ -77,7 +77,7 @@ const experiences = [
   },
 ];
 
-const ExperienceCard = ({ experience, index }) => {
+const ExperienceCard = React.memo(({ experience, index }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -160,7 +160,9 @@ const ExperienceCard = ({ experience, index }) => {
       </div>
     </motion.div>
   );
-};
+});
+
+ExperienceCard.displayName = 'ExperienceCard';
 
 export const Experience = () => {
   return (

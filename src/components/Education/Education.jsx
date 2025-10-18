@@ -60,7 +60,7 @@ const education = [
   },
 ];
 
-const EducationCard = ({ edu, index }) => {
+const EducationCard = React.memo(({ edu, index }) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
@@ -171,7 +171,9 @@ const EducationCard = ({ edu, index }) => {
       </div>
     </motion.div>
   );
-};
+});
+
+EducationCard.displayName = 'EducationCard';
 
 export const Education = () => {
   return (

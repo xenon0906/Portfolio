@@ -76,11 +76,11 @@ const ProjectCard = React.memo(({ repo }) => {
 
           {/* Technologies/Topics */}
           {repo.topics && repo.topics.length > 0 && (
-            <div className="relative z-10 flex flex-wrap gap-2 mb-5">
+            <div className="relative z-10 flex flex-wrap gap-2 mb-5 flex-grow">
               {repo.topics.slice(0, 3).map((topic, index) => (
                 <span
                   key={topic}
-                  className="px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-700 dark:to-slate-600 text-xs font-semibold rounded-lg text-indigo-700 dark:text-purple-300 border border-indigo-200 dark:border-slate-500 hover:scale-105 transition-transform shadow-sm"
+                  className="px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-700 dark:to-slate-600 text-xs font-semibold rounded-lg text-indigo-700 dark:text-purple-300 border border-indigo-200 dark:border-slate-500 hover:scale-105 transition-transform shadow-sm h-fit"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   {topic}
@@ -90,7 +90,7 @@ const ProjectCard = React.memo(({ repo }) => {
           )}
 
           {/* Footer */}
-          <div className="relative z-10 flex items-center justify-between pt-5 border-t-2 border-slate-200 dark:border-slate-700 group-hover:border-indigo-500/30 transition-colors">
+          <div className="relative z-10 flex items-center justify-between pt-5 mt-auto border-t-2 border-slate-200 dark:border-slate-700 group-hover:border-indigo-500/30 transition-colors">
             {/* Stats */}
             <div className="flex items-center gap-4 text-sm font-medium text-slate-600 dark:text-slate-400">
               {primaryLanguage && (

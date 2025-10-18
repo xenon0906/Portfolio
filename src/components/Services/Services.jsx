@@ -53,7 +53,7 @@ const services = [
   },
 ];
 
-const ServiceCard = ({ service, index }) => {
+const ServiceCard = React.memo(({ service, index }) => {
   const Icon = service.icon;
 
   return (
@@ -106,7 +106,9 @@ const ServiceCard = ({ service, index }) => {
       <div className={`absolute inset-0 bg-gradient-to-r ${service.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity pointer-events-none`} />
     </motion.div>
   );
-};
+});
+
+ServiceCard.displayName = 'ServiceCard';
 
 export const Services = () => {
   return (
@@ -153,7 +155,11 @@ export const Services = () => {
               Let's discuss how I can help bring your project to life
             </p>
             <motion.a
-              href="#contact"
+              href="/contact"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/contact';
+              }}
               className="inline-block px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white font-bold text-lg rounded-xl shadow-xl hover:shadow-indigo-500/50 bg-[length:200%_auto] transition-all"
               whileHover={{ scale: 1.05, backgroundPosition: 'right center' }}
               whileTap={{ scale: 0.95 }}

@@ -30,7 +30,7 @@ const topSkills = [
   },
 ];
 
-const SkillCard = ({ skill, index }) => {
+const SkillCard = React.memo(({ skill, index }) => {
   const Icon = skill.icon;
 
   return (
@@ -50,7 +50,9 @@ const SkillCard = ({ skill, index }) => {
       </h3>
     </motion.div>
   );
-};
+});
+
+SkillCard.displayName = 'SkillCard';
 
 export const About = () => {
   return (
