@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw, ExternalLink } from 'lucide-react';
 import { useAutoUpdateGitHub } from '../../hooks';
@@ -11,18 +11,18 @@ export const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Get top 6 projects
-  const topProjects = repos?.slice(0, 6) || [];
+  // Memoize top 6 projects to avoid recalculation
+  const topProjects = useMemo(() => repos?.slice(0, 6) || [], [repos]);
 
-  const handleProjectClick = (project) => {
+  const handleProjectClick = useCallback((project) => {
     setSelectedProject(project);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedProject(null), 300);
-  };
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },

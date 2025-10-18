@@ -22,7 +22,7 @@ const LANGUAGE_COLORS = {
   CSS: '#563d7c',
 };
 
-export const ProjectCard = ({ repo }) => {
+const ProjectCard = React.memo(({ repo }) => {
   const isRecent = repo.isRecentlyUpdated;
   const primaryLanguage = repo.language;
   const languageColor = LANGUAGE_COLORS[primaryLanguage] || '#6366f1';
@@ -73,11 +73,6 @@ export const ProjectCard = ({ repo }) => {
               )}
             </div>
           </div>
-
-          {/* Description */}
-          <p className="relative z-10 text-slate-600 dark:text-slate-300 text-base mb-5 flex-1 line-clamp-3 leading-relaxed">
-            {repo.description || 'No description available.'}
-          </p>
 
           {/* Technologies/Topics */}
           {repo.topics && repo.topics.length > 0 && (
@@ -147,6 +142,9 @@ export const ProjectCard = ({ repo }) => {
       </Tilt>
     </motion.div>
   );
-};
+});
 
+ProjectCard.displayName = 'ProjectCard';
+
+export { ProjectCard };
 export default ProjectCard;

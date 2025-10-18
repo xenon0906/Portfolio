@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Github, ExternalLink, Star, GitFork, Calendar, Code } from 'lucide-react';
+import { X, Github, ExternalLink, Star, GitFork, Calendar, Code, FileText } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 const LANGUAGE_COLORS = {
@@ -22,6 +22,44 @@ const LANGUAGE_COLORS = {
 };
 
 export const ProjectModal = ({ project, isOpen, onClose }) => {
+  const [readme, setReadme] = useState('');
+  const [isLoadingReadme, setIsLoadingReadme] = useState(false);
+
+  useEffect(() => {
+    if (!project || !isOpen) return;
+
+    const fetchReadme = async () => {
+      setIsLoadingReadme(true);
+      try {
+        const response = await fetch(
+          `https://raw.githubusercontent.com/${project.full_name}/main/README.md`
+        );
+        if (response.ok) {
+          const text = await response.text();
+          setReadme(text);
+        } else {
+          // Try master branch if main doesn't exist
+          const masterResponse = await fetch(
+            `https://raw.githubusercontent.com/${project.full_name}/master/README.md`
+          );
+          if (masterResponse.ok) {
+            const text = await masterResponse.text();
+            setReadme(text);
+          } else {
+            setReadme('');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching README:', error);
+        setReadme('');
+      } finally {
+        setIsLoadingReadme(false);
+      }
+    };
+
+    fetchReadme();
+  }, [project, isOpen]);
+
   if (!project) return null;
 
   const languageColor = LANGUAGE_COLORS[project.language] || '#6366f1';
@@ -167,12 +205,27 @@ export const ProjectModal = ({ project, isOpen, onClose }) => {
                   </div>
                 )}
 
-                {/* Description Section */}
+                {/* README Section */}
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">About This Project</h3>
-                  <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {project.description || 'This project doesn\'t have a detailed description yet. Check out the GitHub repository to learn more about what it does and how it works.'}
-                  </p>
+                  <div className="flex items-center gap-2 mb-4">
+                    <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">About This Project</h3>
+                  </div>
+                  {isLoadingReadme ? (
+                    <div className="space-y-3 animate-pulse">
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-full" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-5/6" />
+                      <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-4/6" />
+                    </div>
+                  ) : readme ? (
+                    <div className="prose prose-slate dark:prose-invert max-w-none bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-x-auto">
+                      <pre className="whitespace-pre-wrap text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-mono">{readme}</pre>
+                    </div>
+                  ) : (
+                    <p className="text-base text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+                      {project.description || 'No README or description available. Check out the GitHub repository to learn more about this project.'}
+                    </p>
+                  )}
                 </div>
 
                 {/* Action Buttons */}
