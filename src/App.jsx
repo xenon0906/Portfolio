@@ -1,15 +1,17 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Github, Linkedin } from 'lucide-react';
 import { ThemeProvider } from './utils/ThemeContext';
 import Navbar from './components/Layout/Navbar';
 import PageLoader from './components/UI/PageLoader';
-import Home from './pages/Home';
-import ProjectsPage from './pages/ProjectsPage';
-import SkillsPage from './pages/SkillsPage';
-import ContactPage from './pages/ContactPage';
+
+// Lazy load pages for better performance
+const Home = lazy(() => import('./pages/Home'));
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
+const SkillsPage = lazy(() => import('./pages/SkillsPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 function App() {
   return (
@@ -67,6 +69,7 @@ function App() {
           </footer>
         </div>
         <Analytics />
+        <SpeedInsights />
       </Router>
     </ThemeProvider>
   );

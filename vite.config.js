@@ -13,7 +13,7 @@ export default defineConfig({
     // Optimize chunk size
     chunkSizeWarningLimit: 1000,
     // Target modern browsers for smaller bundles
-    target: 'es2015',
+    target: 'es2020',
     // Enable CSS code splitting
     cssCodeSplit: true,
     rollupOptions: {
