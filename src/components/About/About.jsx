@@ -91,7 +91,7 @@ export const About = () => {
             </div>
 
             <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-              A second-year B.Tech student with a passion for technology and programming.
+              A third-year B.Tech student with a passion for technology and programming.
               I'm always eager to learn and contribute to the tech community.
             </p>
 
