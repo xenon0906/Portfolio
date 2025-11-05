@@ -1,32 +1,59 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { RefreshCw, ExternalLink } from 'lucide-react';
+import { RefreshCw, ExternalLink, Github } from 'lucide-react';
 import { useAutoUpdateGitHub } from '../../hooks';
-import ProjectCard from './ProjectCard';
-import ProjectModal from '../Modals/ProjectModal';
+import FeaturedProjectCard from './FeaturedProjectCard';
+import GitHubRepoCard from './GitHubRepoCard';
+
+// Featured Projects Data
+const FEATURED_PROJECTS = [
+  {
+    title: 'FundChain',
+    description: 'A modern, transparent, and secure blockchain-powered crowdfunding platform built on Ethereum. Create campaigns, contribute funds, and vote on spending decisions with complete transparency.',
+    image: '/projects/fundchain.png',
+    liveUrl: 'https://fundcloud.vercel.app/',
+    githubUrl: 'https://github.com/xenon0906/FundChain',
+    tech: ['Blockchain', 'Ethereum', 'React', 'Solidity', 'Web3'],
+  },
+  {
+    title: 'BlockVote',
+    description: 'Blockchain-based polling platform on Ethereum Sepolia. Secure, transparent, and tamper-proof voting system powered by smart contracts.',
+    image: '/projects/blockvote.png',
+    liveUrl: 'https://blockvoteapp.vercel.app/',
+    githubUrl: 'https://github.com/xenon0906/BlockVote',
+    tech: ['Blockchain', 'Ethereum', 'Smart Contracts', 'React'],
+  },
+  {
+    title: 'DeepFind AI',
+    description: 'AI-Powered Semantic Search Engine with Multi-API Aggregation. Search PDFs, articles, and web content with AI-powered relevance scoring and intelligent ranking.',
+    image: '/projects/deepfind.png',
+    liveUrl: 'https://deepfindai.vercel.app/',
+    githubUrl: 'https://github.com/xenon0906/DeepFind-AI',
+    tech: ['AI', 'Machine Learning', 'Next.js', 'Semantic Search', 'APIs'],
+  },
+];
+
+// Specific GitHub repos to show
+const GITHUB_REPOS_TO_SHOW = [
+  'Bus-Station',
+  'ThunderBird',
+  'Fashion-MNIST-Classification-with-TensorFlow',
+  'ClimaScope',
+  'Encrypter-Decrypter',
+  'Theme-Change-Static-',
+];
 
 export const Projects = () => {
-  const { repos, isLoading, isRefreshing, refresh, getTimeSinceSync } = useAutoUpdateGitHub();
-  const [filter, setFilter] = useState('all');
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { repos, isLoading, isRefreshing, refresh } = useAutoUpdateGitHub();
 
-  // Memoize top 6 projects only
-  const displayProjects = useMemo(() => {
+  // Filter repos to show only specified ones
+  const filteredRepos = useMemo(() => {
     if (!repos || repos.length === 0) return [];
-    // Take only top 6 projects by featured score
-    return repos.slice(0, 6);
+
+    return repos
+      .filter(repo => GITHUB_REPOS_TO_SHOW.includes(repo.name))
+      .slice(0, 6); // Ensure max 6
   }, [repos]);
-
-  const handleProjectClick = useCallback((project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
-  }, []);
-
-  const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedProject(null), 300);
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -44,7 +71,7 @@ export const Projects = () => {
       <div className="section-divider mb-16" />
 
       {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/5 to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
@@ -52,18 +79,44 @@ export const Projects = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-white">
-            Best <span className="text-gradient">Projects</span>
+            Featured <span className="text-gradient">Projects</span>
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
-            Top 6 projects showcasing my expertise in modern development
+            Blockchain, AI, and full-stack applications showcasing my expertise
+          </p>
+        </motion.div>
+
+        {/* Featured Projects - Top 3 with Screenshots */}
+        <div className="space-y-12 mb-28">
+          {FEATURED_PROJECTS.map((project, index) => (
+            <FeaturedProjectCard key={project.title} project={project} index={index} />
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div className="section-divider my-16" />
+
+        {/* GitHub Repositories Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h3 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 dark:text-white">
+            More <span className="text-gradient">Projects</span>
+          </h3>
+          <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto">
+            Explore additional projects from my GitHub portfolio
           </p>
 
           {/* Sync Status */}
-          <div className="mt-8 flex items-center justify-center gap-6 flex-wrap">
-            <div className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl border-2 border-slate-200 dark:border-slate-700 shadow-lg">
+          <div className="flex items-center justify-center gap-4 flex-wrap">
+            <div className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-800 rounded-2xl border-2 border-slate-200 dark:border-slate-700 shadow-lg">
               <div className="relative flex items-center justify-center">
                 <div className={`w-3 h-3 rounded-full ${!isLoading && repos?.length > 0 ? 'bg-emerald-500' : 'bg-red-500'}`} />
                 <div className={`absolute w-3 h-3 rounded-full ${!isLoading && repos?.length > 0 ? 'bg-emerald-500' : 'bg-red-500'} animate-ping`} />
@@ -86,42 +139,32 @@ export const Projects = () => {
           </div>
         </motion.div>
 
-        {/* Projects Grid */}
+        {/* GitHub Repos Grid */}
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="glass-effect p-6 rounded-2xl animate-pulse h-full">
-                <div className="h-6 bg-charcoal/10 dark:bg-off-white/10 rounded mb-4" />
-                <div className="h-16 bg-charcoal/10 dark:bg-off-white/10 rounded mb-4" />
-                <div className="h-4 bg-charcoal/10 dark:bg-off-white/10 rounded mb-2" />
-                <div className="h-4 bg-charcoal/10 dark:bg-off-white/10 rounded" />
+              <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-2xl animate-pulse h-48 border-2 border-slate-200 dark:border-slate-700">
+                <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded mb-4 w-3/4" />
+                <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded mb-4 w-1/2" />
+                <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded w-full" />
               </div>
             ))}
           </div>
         ) : (
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {displayProjects.map((repo) => (
-              <div key={repo.id} onClick={() => handleProjectClick(repo)} className="cursor-pointer h-full">
-                <ProjectCard repo={repo} />
-              </div>
+            {filteredRepos.map((repo, index) => (
+              <GitHubRepoCard key={repo.id} repo={repo} index={index} />
             ))}
           </motion.div>
         )}
 
-        {/* Project Modal */}
-        <ProjectModal
-          project={selectedProject}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-        />
-
-        {/* View All Link */}
+        {/* View All Repositories */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -132,11 +175,12 @@ export const Projects = () => {
             href="https://github.com/xenon0906?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-indigo-500/50 bg-[length:200%_auto]"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-slate-500/50 bg-[length:200%_auto] border-2 border-slate-700 dark:border-slate-500"
             whileHover={{ scale: 1.05, backgroundPosition: 'right center' }}
             whileTap={{ scale: 0.95 }}
           >
-            View All Projects on GitHub
+            <Github className="w-6 h-6" />
+            <span>View All Repositories</span>
             <ExternalLink className="w-5 h-5" />
           </motion.a>
         </motion.div>
