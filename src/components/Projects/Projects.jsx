@@ -11,8 +11,12 @@ export const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Memoize all projects to avoid recalculation
-  const displayProjects = useMemo(() => repos || [], [repos]);
+  // Memoize top 6 projects only
+  const displayProjects = useMemo(() => {
+    if (!repos || repos.length === 0) return [];
+    // Take only top 6 projects by featured score
+    return repos.slice(0, 6);
+  }, [repos]);
 
   const handleProjectClick = useCallback((project) => {
     setSelectedProject(project);
@@ -50,31 +54,34 @@ export const Projects = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-slate-100">
-            Featured <span className="text-gradient">Projects</span>
+          <h2 className="text-5xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-white">
+            Best <span className="text-gradient">Projects</span>
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Showcasing my most impactful work. Projects are ranked by stars, forks, and recent activity.
+          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            Top 6 projects showcasing my expertise in modern development
           </p>
 
           {/* Sync Status */}
-          <div className="mt-8 flex items-center justify-center gap-6">
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full border border-slate-200 dark:border-slate-700">
-              <div className={`w-2.5 h-2.5 rounded-full animate-pulse ${!isLoading && repos?.length > 0 ? 'bg-emerald-500' : 'bg-red-500'}`} />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
-                {!isLoading && repos?.length > 0 ? 'Live data from GitHub' : 'Connecting to GitHub...'}
+          <div className="mt-8 flex items-center justify-center gap-6 flex-wrap">
+            <div className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl border-2 border-slate-200 dark:border-slate-700 shadow-lg">
+              <div className="relative flex items-center justify-center">
+                <div className={`w-3 h-3 rounded-full ${!isLoading && repos?.length > 0 ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                <div className={`absolute w-3 h-3 rounded-full ${!isLoading && repos?.length > 0 ? 'bg-emerald-500' : 'bg-red-500'} animate-ping`} />
+              </div>
+              <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
+                {!isLoading && repos?.length > 0 ? 'Connected to GitHub' : 'Connecting...'}
               </span>
             </div>
 
             <motion.button
               onClick={refresh}
               disabled={isRefreshing}
-              className="flex items-center gap-2 px-5 py-2.5 bg-white/90 dark:bg-slate-700/90 text-slate-700 dark:text-slate-200 rounded-full hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-md hover:shadow-lg border border-slate-200 dark:border-slate-600 disabled:opacity-50 font-medium"
+              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-2xl hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed font-bold"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              <span className="text-sm font-semibold">{isRefreshing ? 'Refreshing...' : 'Refresh'}</span>
+              <span className="text-sm">{isRefreshing ? 'Updating...' : 'Refresh'}</span>
             </motion.button>
           </div>
         </motion.div>

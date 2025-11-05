@@ -37,101 +37,72 @@ const ProjectCard = React.memo(({ repo }) => {
   };
 
   return (
-    <motion.div variants={cardVariants}>
-      <Tilt
-        tiltMaxAngleX={5}
-        tiltMaxAngleY={5}
-        glareEnable={true}
-        glareMaxOpacity={0.2}
-        glareColor="#6366f1"
-        glarePosition="all"
-        glareBorderRadius="1rem"
-        className="h-full"
-      >
-        <div className="relative glass-effect p-7 rounded-3xl h-full flex flex-col group hover:shadow-2xl hover:shadow-indigo-500/20 transition-all duration-500 border-2 border-transparent hover:border-indigo-500/30 overflow-hidden">
-          {/* Gradient overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+    <motion.div variants={cardVariants} className="h-full">
+      <div className="relative bg-white dark:bg-slate-800 p-6 rounded-2xl h-full flex flex-col group hover:shadow-2xl hover:shadow-indigo-500/30 transition-all duration-300 border-2 border-slate-200 dark:border-slate-700 hover:border-indigo-500 dark:hover:border-indigo-400">
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
 
-          {/* Header */}
-          <div className="flex items-start justify-between mb-5 relative z-10">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-xl font-extrabold text-slate-900 dark:text-slate-100 group-hover:text-gradient transition-all duration-300">
-                  {repo.name}
-                </h3>
-                {isRecent && (
-                  <span className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-emerald-400/30 to-green-400/30 dark:from-emerald-500/30 dark:to-green-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/50 dark:border-emerald-400/50 shadow-lg shadow-emerald-500/20">
-                    <div className="w-1.5 h-1.5 bg-emerald-600 dark:bg-emerald-400 rounded-full animate-pulse" />
-                    Live
-                  </span>
-                )}
+        {/* Project Name & Live Badge */}
+        <div className="relative z-10 mb-4">
+          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            {repo.name}
+          </h3>
+
+          {repo.homepage && (
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 dark:bg-emerald-500/30 rounded-full border border-emerald-500/50 dark:border-emerald-400/50">
+              <div className="relative flex items-center justify-center">
+                <div className="w-2 h-2 bg-emerald-500 dark:bg-emerald-400 rounded-full" />
+                <div className="absolute w-2 h-2 bg-emerald-500 dark:bg-emerald-400 rounded-full animate-ping" />
               </div>
-              {isRecent && (
-                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  Updated {formatDistanceToNow(new Date(repo.updated_at), { addSuffix: true })}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Technologies/Topics */}
-          {repo.topics && repo.topics.length > 0 && (
-            <div className="relative z-10 flex flex-wrap gap-2 mb-5 flex-grow">
-              {repo.topics.slice(0, 3).map((topic, index) => (
-                <span
-                  key={topic}
-                  className="px-3 py-1.5 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-700 dark:to-slate-600 text-xs font-semibold rounded-lg text-indigo-700 dark:text-purple-300 border border-indigo-200 dark:border-slate-500 hover:scale-105 transition-transform shadow-sm h-fit"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  {topic}
-                </span>
-              ))}
+              <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">Live</span>
             </div>
           )}
-
-          {/* Footer */}
-          <div className="relative z-10 flex items-center justify-between pt-5 mt-auto border-t-2 border-slate-200 dark:border-slate-700 group-hover:border-indigo-500/30 transition-colors">
-            {/* Language */}
-            <div className="flex items-center gap-4 text-sm font-medium text-slate-600 dark:text-slate-400">
-              {primaryLanguage && (
-                <div className="flex items-center gap-1.5 group/lang">
-                  <div
-                    className="w-3 h-3 rounded-full shadow-md group-hover/lang:scale-125 transition-transform"
-                    style={{ backgroundColor: languageColor, boxShadow: `0 0 12px ${languageColor}60` }}
-                  />
-                  <span className="font-semibold">{primaryLanguage}</span>
-                </div>
-              )}
-            </div>
-
-            {/* Links */}
-            <div className="flex gap-2">
-              <motion.a
-                href={repo.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 text-slate-700 dark:text-slate-200 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
-                whileHover={{ scale: 1.15, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Github className="w-4 h-4" />
-              </motion.a>
-              {repo.homepage && (
-                <motion.a
-                  href={repo.homepage}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 text-slate-700 dark:text-slate-200 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
-                  whileHover={{ scale: 1.15, rotate: -5 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </motion.a>
-              )}
-            </div>
-          </div>
         </div>
-      </Tilt>
+
+        {/* Language */}
+        <div className="relative z-10 flex-grow mb-4">
+          {primaryLanguage && (
+            <div className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-700/50 rounded-xl w-fit">
+              <div
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: languageColor, boxShadow: `0 0 10px ${languageColor}80` }}
+              />
+              <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{primaryLanguage}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Links */}
+        <div className="relative z-10 flex gap-3 mt-auto pt-4 border-t-2 border-slate-200 dark:border-slate-700">
+          <motion.a
+            href={repo.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-slate-900 dark:bg-slate-700 text-white rounded-xl hover:bg-slate-800 dark:hover:bg-slate-600 transition-all font-bold text-sm"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Github className="w-4 h-4" />
+            <span>Code</span>
+          </motion.a>
+
+          {repo.homepage && (
+            <motion.a
+              href={repo.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all font-bold text-sm shadow-lg"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>Visit</span>
+            </motion.a>
+          )}
+        </div>
+      </div>
     </motion.div>
   );
 });

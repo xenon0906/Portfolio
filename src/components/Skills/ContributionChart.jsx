@@ -44,11 +44,11 @@ const ContributionChart = ({ contributions = [] }) => {
   }, [contributionData]);
 
   const getColor = (count) => {
-    if (count === 0) return 'bg-slate-200 dark:bg-slate-800';
-    if (count <= 2) return 'bg-emerald-300 dark:bg-emerald-900';
-    if (count <= 5) return 'bg-emerald-400 dark:bg-emerald-700';
-    if (count <= 8) return 'bg-emerald-500 dark:bg-emerald-600';
-    return 'bg-emerald-600 dark:bg-emerald-500';
+    if (count === 0) return 'bg-slate-200 dark:bg-slate-700';
+    if (count <= 2) return 'bg-emerald-400 dark:bg-emerald-500';
+    if (count <= 5) return 'bg-emerald-500 dark:bg-emerald-400';
+    if (count <= 8) return 'bg-emerald-600 dark:bg-emerald-300';
+    return 'bg-emerald-700 dark:bg-emerald-200';
   };
 
   const getIntensity = (count) => {
@@ -64,16 +64,25 @@ const ContributionChart = ({ contributions = [] }) => {
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      className="glass-effect p-8 rounded-3xl"
+      className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-xl border-2 border-slate-200 dark:border-slate-700"
     >
-      <h3 className="text-2xl md:text-3xl font-bold mb-6 text-slate-900 dark:text-slate-100">
-        Contribution Activity
-      </h3>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+          GitHub Activity
+        </h3>
+        <span className="text-sm font-bold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-4 py-2 rounded-full">
+          Last 365 Days
+        </span>
+      </div>
 
-      <div className="overflow-x-auto">
-        <div className="inline-flex gap-1 min-w-max">
+      <p className="text-slate-600 dark:text-slate-400 mb-6">
+        Daily contribution pattern showing coding consistency and project activity
+      </p>
+
+      <div className="overflow-x-auto pb-4">
+        <div className="inline-flex gap-1.5 min-w-max">
           {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex flex-col gap-1">
+            <div key={weekIndex} className="flex flex-col gap-1.5">
               {Array.from({ length: 7 }).map((_, dayIndex) => {
                 const day = week.find(d => d.day === dayIndex);
                 const count = day?.count || 0;
@@ -84,10 +93,10 @@ const ContributionChart = ({ contributions = [] }) => {
                     initial={{ scale: 0, opacity: 0 }}
                     animate={inView ? { scale: 1, opacity: 1 } : {}}
                     transition={{
-                      delay: weekIndex * 0.01 + dayIndex * 0.005,
+                      delay: weekIndex * 0.005 + dayIndex * 0.002,
                       duration: 0.2
                     }}
-                    className={`w-3 h-3 rounded-sm ${getColor(count)} transition-all hover:ring-2 hover:ring-indigo-500 hover:scale-125 cursor-pointer`}
+                    className={`w-3.5 h-3.5 rounded ${getColor(count)} transition-all hover:ring-2 hover:ring-indigo-500 dark:hover:ring-indigo-400 hover:scale-150 cursor-pointer shadow-sm`}
                     title={day ? `${day.date}: ${count} contributions - ${getIntensity(count)}` : ''}
                   />
                 );
@@ -98,16 +107,16 @@ const ContributionChart = ({ contributions = [] }) => {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-3 mt-6 text-sm text-slate-600 dark:text-slate-400">
-        <span className="font-medium">Less</span>
-        <div className="flex gap-1">
-          <div className="w-3 h-3 rounded-sm bg-slate-200 dark:bg-slate-800" />
-          <div className="w-3 h-3 rounded-sm bg-emerald-300 dark:bg-emerald-900" />
-          <div className="w-3 h-3 rounded-sm bg-emerald-400 dark:bg-emerald-700" />
-          <div className="w-3 h-3 rounded-sm bg-emerald-500 dark:bg-emerald-600" />
-          <div className="w-3 h-3 rounded-sm bg-emerald-600 dark:bg-emerald-500" />
+      <div className="flex items-center justify-center gap-3 mt-6 text-sm">
+        <span className="font-bold text-slate-600 dark:text-slate-400">Less</span>
+        <div className="flex gap-1.5">
+          <div className="w-4 h-4 rounded bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600" />
+          <div className="w-4 h-4 rounded bg-emerald-400 dark:bg-emerald-500 border border-emerald-500 dark:border-emerald-400" />
+          <div className="w-4 h-4 rounded bg-emerald-500 dark:bg-emerald-400 border border-emerald-600 dark:border-emerald-300" />
+          <div className="w-4 h-4 rounded bg-emerald-600 dark:bg-emerald-300 border border-emerald-700 dark:border-emerald-200" />
+          <div className="w-4 h-4 rounded bg-emerald-700 dark:bg-emerald-200 border border-emerald-800 dark:border-emerald-100" />
         </div>
-        <span className="font-medium">More</span>
+        <span className="font-bold text-slate-600 dark:text-slate-400">More</span>
       </div>
     </motion.div>
   );
