@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useAutoUpdateGitHub } from '../../hooks';
 import { Code2, Cloud, Database, Cpu, Wrench, Palette } from 'lucide-react';
+import ContributionChart from './ContributionChart';
 
 const LANGUAGE_COLORS = {
   JavaScript: '#f7df1e',
@@ -13,6 +14,39 @@ const LANGUAGE_COLORS = {
   C: '#555555',
   HTML: '#e34c26',
   CSS: '#563d7c',
+};
+
+const SKILL_LINKS = {
+  'C': 'https://en.wikipedia.org/wiki/C_(programming_language)',
+  'Rust': 'https://www.rust-lang.org/',
+  'Python': 'https://www.python.org/',
+  'JavaScript': 'https://developer.mozilla.org/en-US/docs/Web/JavaScript',
+  'TypeScript': 'https://www.typescriptlang.org/',
+  'Solidity': 'https://soliditylang.org/',
+  'AWS': 'https://aws.amazon.com/',
+  'Firebase': 'https://firebase.google.com/',
+  'Google Cloud': 'https://cloud.google.com/',
+  'Vercel': 'https://vercel.com/',
+  'Twilio': 'https://www.twilio.com/',
+  'React': 'https://react.dev/',
+  'Next.js': 'https://nextjs.org/',
+  'Angular': 'https://angular.dev/',
+  'Web3.js': 'https://web3js.org/',
+  'PyTorch': 'https://pytorch.org/',
+  'TensorFlow': 'https://www.tensorflow.org/',
+  'Keras': 'https://keras.io/',
+  'MongoDB': 'https://www.mongodb.com/',
+  'NumPy': 'https://numpy.org/',
+  'Pandas': 'https://pandas.pydata.org/',
+  'scikit-learn': 'https://scikit-learn.org/',
+  'Docker': 'https://www.docker.com/',
+  'GitHub': 'https://github.com/',
+  'GitLab': 'https://gitlab.com/',
+  'Postman': 'https://www.postman.com/',
+  'Yarn': 'https://yarnpkg.com/',
+  'Power BI': 'https://powerbi.microsoft.com/',
+  'Figma': 'https://www.figma.com/',
+  'Framer': 'https://www.framer.com/',
 };
 
 const TECH_CATEGORIES = {
@@ -127,15 +161,18 @@ const SkillCategory = ({ category, data, index }) => {
 
       <div className="flex flex-wrap gap-3">
         {data.skills.map((skill, i) => (
-          <motion.span
+          <motion.a
             key={skill}
+            href={SKILL_LINKS[skill]}
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
             transition={{ delay: index * 0.1 + i * 0.05 }}
-            className="px-4 py-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-500 hover:scale-105 transition-all"
+            className="px-4 py-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl font-semibold text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-indigo-500 hover:scale-105 transition-all cursor-pointer"
           >
             {skill}
-          </motion.span>
+          </motion.a>
         ))}
       </div>
     </motion.div>
@@ -175,6 +212,16 @@ export const Skills = () => {
           ))}
         </div>
 
+        {/* Contribution Chart */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-20 mb-20"
+        >
+          <ContributionChart />
+        </motion.div>
+
         {/* Language Distribution from GitHub */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -200,7 +247,7 @@ export const Skills = () => {
             </div>
           ) : (
             <div className="glass-effect p-10 md:p-12 rounded-3xl max-w-5xl mx-auto">
-              {languages?.map((lang, index) => (
+              {languages?.slice(0, 5).map((lang, index) => (
                 <SkillBar
                   key={lang.language}
                   language={lang.language}

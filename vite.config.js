@@ -7,6 +7,8 @@ export default defineConfig({
     react({
       // Enable Fast Refresh for better development experience
       fastRefresh: true,
+      // Use automatic JSX runtime for smaller bundles
+      jsxRuntime: 'automatic',
     })
   ],
   build: {
@@ -19,12 +21,26 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Manual chunking for better caching
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'animation-vendor': ['framer-motion'],
-          'ui-vendor': ['lucide-react', 'react-hot-toast', 'date-fns'],
-          'github-vendor': ['octokit'],
-          'utils-vendor': ['react-intersection-observer', 'react-parallax-tilt'],
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+              return 'react-vendor';
+            }
+            if (id.includes('framer-motion')) {
+              return 'animation-vendor';
+            }
+            if (id.includes('lucide-react') || id.includes('react-hot-toast') || id.includes('date-fns')) {
+              return 'ui-vendor';
+            }
+            if (id.includes('octokit') || id.includes('@octokit')) {
+              return 'github-vendor';
+            }
+            if (id.includes('react-intersection-observer') || id.includes('react-parallax-tilt') || id.includes('react-type-animation')) {
+              return 'utils-vendor';
+            }
+            // Split other vendor chunks
+            return 'vendor';
+          }
         },
         // Optimize asset file names for caching
         assetFileNames: (assetInfo) => {
@@ -32,6 +48,9 @@ export default defineConfig({
           const ext = info[info.length - 1];
           if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
             return `assets/images/[name]-[hash][extname]`;
+          }
+          if (/woff2?|ttf|otf|eot/i.test(ext)) {
+            return `assets/fonts/[name]-[hash][extname]`;
           }
           return `assets/[name]-[hash][extname]`;
         },
@@ -47,6 +66,10 @@ export default defineConfig({
     cssMinify: 'esbuild',
     // Report compressed size
     reportCompressedSize: true,
+    // Improve tree-shaking
+    modulePreload: {
+      polyfill: true,
+    },
   },
   // Optimize dependencies
   optimizeDeps: {

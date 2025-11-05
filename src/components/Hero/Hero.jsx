@@ -138,7 +138,7 @@ export const Hero = () => {
             href={`https://github.com/xenon0906`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-700"
+            className="p-4 bg-white/90 dark:bg-slate-700/90 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200"
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -148,7 +148,7 @@ export const Hero = () => {
             href={`https://linkedin.com/in/syd090605`}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-700"
+            className="p-4 bg-white/90 dark:bg-slate-700/90 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200"
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -160,7 +160,7 @@ export const Hero = () => {
               e.preventDefault();
               window.location.href = '/contact';
             }}
-            className="p-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-700"
+            className="p-4 bg-white/90 dark:bg-slate-700/90 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200"
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.95 }}
           >

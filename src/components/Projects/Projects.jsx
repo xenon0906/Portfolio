@@ -60,14 +60,16 @@ export const Projects = () => {
           {/* Sync Status */}
           <div className="mt-8 flex items-center justify-center gap-6">
             <div className="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full border border-slate-200 dark:border-slate-700">
-              <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">Live data from GitHub</span>
+              <div className={`w-2.5 h-2.5 rounded-full animate-pulse ${!isLoading && repos?.length > 0 ? 'bg-emerald-500' : 'bg-red-500'}`} />
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+                {!isLoading && repos?.length > 0 ? 'Live data from GitHub' : 'Connecting to GitHub...'}
+              </span>
             </div>
 
             <motion.button
               onClick={refresh}
               disabled={isRefreshing}
-              className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 rounded-full hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-md hover:shadow-lg border border-slate-200 dark:border-slate-700 disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 bg-white/90 dark:bg-slate-700/90 text-slate-700 dark:text-slate-200 rounded-full hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-md hover:shadow-lg border border-slate-200 dark:border-slate-600 disabled:opacity-50 font-medium"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

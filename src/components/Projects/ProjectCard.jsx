@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Tilt from 'react-parallax-tilt';
-import { Star, GitFork, ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 const LANGUAGE_COLORS = {
@@ -60,8 +60,8 @@ const ProjectCard = React.memo(({ repo }) => {
                   {repo.name}
                 </h3>
                 {isRecent && (
-                  <span className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-emerald-500/20 to-green-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/40 shadow-lg shadow-emerald-500/20">
-                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                  <span className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-emerald-400/30 to-green-400/30 dark:from-emerald-500/30 dark:to-green-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-bold rounded-full border border-emerald-500/50 dark:border-emerald-400/50 shadow-lg shadow-emerald-500/20">
+                    <div className="w-1.5 h-1.5 bg-emerald-600 dark:bg-emerald-400 rounded-full animate-pulse" />
                     Live
                   </span>
                 )}
@@ -91,7 +91,7 @@ const ProjectCard = React.memo(({ repo }) => {
 
           {/* Footer */}
           <div className="relative z-10 flex items-center justify-between pt-5 mt-auto border-t-2 border-slate-200 dark:border-slate-700 group-hover:border-indigo-500/30 transition-colors">
-            {/* Stats */}
+            {/* Language */}
             <div className="flex items-center gap-4 text-sm font-medium text-slate-600 dark:text-slate-400">
               {primaryLanguage && (
                 <div className="flex items-center gap-1.5 group/lang">
@@ -102,14 +102,6 @@ const ProjectCard = React.memo(({ repo }) => {
                   <span className="font-semibold">{primaryLanguage}</span>
                 </div>
               )}
-              <div className="flex items-center gap-1.5 group/star">
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 group-hover/star:scale-125 transition-transform" />
-                <span className="font-semibold">{repo.stargazers_count}</span>
-              </div>
-              <div className="flex items-center gap-1.5 group/fork">
-                <GitFork className="w-4 h-4 group-hover/fork:scale-125 transition-transform" />
-                <span className="font-semibold">{repo.forks_count}</span>
-              </div>
             </div>
 
             {/* Links */}
@@ -118,7 +110,7 @@ const ProjectCard = React.memo(({ repo }) => {
                 href={repo.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
+                className="p-2.5 text-slate-700 dark:text-slate-200 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
                 whileHover={{ scale: 1.15, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -129,7 +121,7 @@ const ProjectCard = React.memo(({ repo }) => {
                   href={repo.homepage}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2.5 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
+                  className="p-2.5 text-slate-700 dark:text-slate-200 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 hover:text-white rounded-xl transition-all bg-slate-100 dark:bg-slate-700 shadow-md"
                   whileHover={{ scale: 1.15, rotate: -5 }}
                   whileTap={{ scale: 0.95 }}
                 >
