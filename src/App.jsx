@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Linkedin, Link2 } from 'lucide-react';
 import { ThemeProvider } from './utils/ThemeContext';
 import Navbar from './components/Layout/Navbar';
 import PageLoader from './components/UI/PageLoader';
@@ -61,11 +61,29 @@ function App() {
                   >
                     <Linkedin className="w-6 h-6" />
                   </a>
+                  <a
+                    href="https://linktr.ee/siddhanthkunwar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 glass-effect rounded-xl hover:scale-110 transition-transform text-slate-700 dark:text-slate-300"
+                    aria-label="Linktree"
+                  >
+                    <Link2 className="w-6 h-6" />
+                  </a>
                 </div>
               </div>
 
               <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
-                &copy; {new Date().getFullYear()} Siddhanth Kunwar. Built with React + Vite.
+                &copy; {new Date().getFullYear()}{' '}
+                <a
+                  href="https://linktr.ee/siddhanthkunwar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-indigo-600 dark:text-indigo-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-bold"
+                >
+                  Siddhanth Kunwar
+                </a>
+                . Built with React + Vite.
               </p>
             </div>
           </footer>

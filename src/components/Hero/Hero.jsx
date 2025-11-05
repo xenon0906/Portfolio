@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
+import { Github, Linkedin, Mail, MapPin, Link2 } from 'lucide-react';
 import { useAutoUpdateGitHub } from '../../hooks';
 import GitHubStats from './GitHubStats';
 
@@ -90,12 +90,19 @@ export const Hero = () => {
         animate="visible"
       >
 
-        {/* Name */}
+        {/* Name - Clickable to Linktree */}
         <motion.h1
           variants={itemVariants}
-          className="text-6xl md:text-8xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 dark:from-slate-100 dark:via-purple-200 dark:to-slate-100"
+          className="text-6xl md:text-8xl font-extrabold mb-6"
         >
-          Siddhanth Kunwar
+          <a
+            href="https://linktr.ee/siddhanthkunwar"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 dark:from-slate-100 dark:via-purple-200 dark:to-slate-100 hover:from-indigo-600 hover:via-purple-600 hover:to-indigo-600 dark:hover:from-indigo-400 dark:hover:via-purple-400 dark:hover:to-indigo-400 transition-all duration-300 cursor-pointer"
+          >
+            Siddhanth Kunwar
+          </a>
         </motion.h1>
 
         {/* Typewriter effect for roles */}
@@ -153,6 +160,16 @@ export const Hero = () => {
             whileTap={{ scale: 0.95 }}
           >
             <Linkedin className="w-7 h-7" />
+          </motion.a>
+          <motion.a
+            href="https://linktr.ee/siddhanthkunwar"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-4 bg-white/90 dark:bg-slate-700/90 backdrop-blur-sm rounded-2xl hover:bg-gradient-to-br hover:from-indigo-500 hover:to-purple-600 hover:text-white transition-all shadow-lg hover:shadow-xl border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200"
+            whileHover={{ scale: 1.1, y: -5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link2 className="w-7 h-7" />
           </motion.a>
           <motion.a
             href="/contact"

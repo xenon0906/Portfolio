@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Github, Linkedin, Mail } from 'lucide-react';
+import { Send, Github, Linkedin, Mail, Link2 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import googleSheetsService from '../../services/GoogleSheetsService';
 
@@ -205,6 +205,22 @@ export const Contact = () => {
                 <div>
                   <p className="font-bold text-lg text-slate-900 dark:text-slate-100">LinkedIn</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400">syd090605</p>
+                </div>
+              </motion.a>
+
+              <motion.a
+                href="https://linktr.ee/siddhanthkunwar"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-5 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl hover:shadow-xl transition-all border border-slate-200 dark:border-slate-700 hover:border-indigo-500"
+                whileHover={{ x: 8, scale: 1.02 }}
+              >
+                <div className="p-4 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl shadow-lg">
+                  <Link2 className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="font-bold text-lg text-slate-900 dark:text-slate-100">Linktree</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">All Links</p>
                 </div>
               </motion.a>
 
