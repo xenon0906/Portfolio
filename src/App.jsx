@@ -6,6 +6,7 @@ import { Github, Linkedin } from 'lucide-react';
 import { ThemeProvider } from './utils/ThemeContext';
 import Navbar from './components/Layout/Navbar';
 import PageLoader from './components/UI/PageLoader';
+import ScrollToTop from './components/UI/ScrollToTop';
 
 // Lazy load pages for better performance
 const Home = lazy(() => import('./pages/Home'));
@@ -17,6 +18,7 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen bg-off-white dark:bg-charcoal transition-colors duration-300 smooth-scroll">
           <Navbar />
 

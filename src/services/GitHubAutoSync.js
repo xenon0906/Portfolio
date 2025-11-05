@@ -2,7 +2,7 @@ import { Octokit } from 'octokit';
 
 const GITHUB_USERNAME = import.meta.env.VITE_GITHUB_USERNAME || 'xenon0906';
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds (was 30 seconds)
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes in milliseconds
 const STORAGE_KEYS = {
   PROFILE: 'github_profile',
   REPOS: 'github_repos',
@@ -34,23 +34,37 @@ class GitHubAutoSync {
     }
   }
 
-  // Initialize auto-sync with 30-second interval
+  // Initialize auto-sync with interval
   startAutoSync() {
-    // Try to use cached data first for instant load
+    // ALWAYS use cached data first for instant load
     const cachedData = this.getCachedData();
+    const lastSync = cachedData?.lastSync;
+    const isCacheValid = lastSync && (Date.now() - lastSync < CACHE_DURATION);
+
     if (cachedData && cachedData.profile) {
+      // Immediately show cached data
       this.notifyListeners(cachedData);
+      console.log('Loaded GitHub data from cache');
     }
 
-    // Then sync in background
-    this.syncAll();
+    // Only fetch new data if cache is invalid or doesn't exist
+    if (!isCacheValid) {
+      console.log('Cache expired or missing, fetching fresh data...');
+      this.syncAll();
+    } else {
+      console.log('Using valid cache, skipping fetch');
+    }
 
     // Set up interval for auto-sync
     this.syncInterval = setInterval(() => {
-      this.syncAll();
+      const currentCache = this.getCachedData();
+      const currentLastSync = currentCache?.lastSync;
+      if (!currentLastSync || (Date.now() - currentLastSync >= CACHE_DURATION)) {
+        this.syncAll();
+      }
     }, CACHE_DURATION);
 
-    console.log('GitHub auto-sync started (5-minute intervals)');
+    console.log('GitHub auto-sync started (10-minute intervals)');
   }
 
   // Stop auto-sync

@@ -17,6 +17,15 @@ export const Navbar = () => {
   const scrollProgress = useScrollProgress();
   const location = useLocation();
 
+  const handleLogoClick = (e) => {
+    if (location.pathname === '/') {
+      // If already on home page, scroll to top
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    // Otherwise, let Link component handle navigation
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-effect shadow-lg">
       {/* Scroll Progress Bar */}
@@ -31,7 +40,7 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/">
+          <Link to="/" onClick={handleLogoClick}>
             <motion.div
               className="text-2xl font-extrabold text-gradient cursor-pointer"
               whileHover={{ scale: 1.05 }}
