@@ -140,11 +140,19 @@ class GitHubAutoSync {
 
       return syncData;
     } catch (error) {
-      console.error('Error syncing GitHub data:', error);
+      console.error('❌ Error syncing GitHub data:', error);
       this.updateSyncStatus('error');
 
-      // Return cached data on error
-      return this.getCachedData();
+      // Get cached data to return
+      const cachedData = this.getCachedData();
+
+      // Still notify listeners with cached data (if available)
+      if (cachedData && cachedData.profile) {
+        console.log('📦 Returning cached data after error');
+        this.notifyListeners(cachedData);
+      }
+
+      return cachedData;
     } finally {
       this.isSyncing = false;
     }

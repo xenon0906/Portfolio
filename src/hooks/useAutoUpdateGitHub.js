@@ -21,27 +21,47 @@ export const useAutoUpdateGitHub = () => {
 
     const initialize = async () => {
       try {
-        // Get initial data (from cache or fetch)
-        const initialData = await gitHubSync.getData();
-
-        if (initialData) {
-          setData(initialData);
+        // Check for cached data FIRST for instant display
+        const cachedData = gitHubSync.getCachedData();
+        if (cachedData && cachedData.profile) {
+          console.log('✅ Loaded cached GitHub data immediately');
+          setData(cachedData);
+          setIsLoading(false); // Stop loading immediately if we have cache
+          setSyncStatus('success');
         }
 
-        // Start auto-sync
+        // Start auto-sync (will use cache if valid or fetch if not)
         gitHubSync.startAutoSync();
 
         // Listen for updates
         unsubscribe = gitHubSync.addListener((updatedData) => {
-          setData(updatedData);
-          setSyncStatus('success');
+          if (updatedData && updatedData.profile) {
+            console.log('📡 Received fresh GitHub data');
+            setData(updatedData);
+            setSyncStatus('success');
+            setIsLoading(false);
+          }
         });
 
-        setIsLoading(false);
+        // If no cached data, wait for first sync with timeout
+        if (!cachedData || !cachedData.profile) {
+          console.log('⏳ No cached data, waiting for first sync...');
+
+          // Set a timeout to stop loading after 10 seconds even if no data
+          setTimeout(() => {
+            if (isLoading) {
+              console.log('⚠️ GitHub sync timeout - stopping loader');
+              setIsLoading(false);
+              setSyncStatus('error');
+              setError('GitHub data loading timeout. Please refresh the page.');
+            }
+          }, 10000);
+        }
       } catch (err) {
-        console.error('Error initializing GitHub sync:', err);
+        console.error('❌ Error initializing GitHub sync:', err);
         setError(err.message);
         setIsLoading(false);
+        setSyncStatus('error');
       }
     };
 
