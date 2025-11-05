@@ -66,51 +66,51 @@ export const Projects = () => {
   };
 
   return (
-    <section id="projects" className="py-16 px-4 relative overflow-hidden">
+    <section id="projects" className="py-12 sm:py-16 px-4 relative overflow-hidden">
       {/* Section divider top */}
-      <div className="section-divider mb-16" />
+      <div className="section-divider mb-12 sm:mb-16" />
 
       {/* Background decoration */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/5 to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
+        {/* Header - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-extrabold mb-6 text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 text-slate-900 dark:text-white px-2">
             Featured <span className="text-gradient">Projects</span>
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed px-4">
             Blockchain, AI, and full-stack applications showcasing my expertise
           </p>
         </motion.div>
 
         {/* Featured Projects - Top 3 with Screenshots */}
-        <div className="space-y-12 mb-28">
+        <div className="space-y-8 sm:space-y-10 md:space-y-12 mb-16 sm:mb-20 md:mb-28">
           {FEATURED_PROJECTS.map((project, index) => (
             <FeaturedProjectCard key={project.title} project={project} index={index} />
           ))}
         </div>
 
         {/* Divider */}
-        <div className="section-divider my-16" />
+        <div className="section-divider my-12 sm:my-14 md:my-16" />
 
-        {/* GitHub Repositories Section */}
+        {/* GitHub Repositories Section - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          <h3 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 dark:text-white">
+          <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 sm:mb-6 text-slate-900 dark:text-white px-2">
             More <span className="text-gradient">Projects</span>
           </h3>
-          <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-8 sm:mb-10 max-w-2xl mx-auto px-4">
             Explore additional projects from my GitHub portfolio
           </p>
 
@@ -164,24 +164,24 @@ export const Projects = () => {
           </motion.div>
         )}
 
-        {/* View All Repositories */}
+        {/* View All Repositories - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="text-center mt-12 sm:mt-14 md:mt-16 px-4"
         >
           <motion.a
             href="https://github.com/xenon0906?tab=repositories"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 text-white font-bold text-lg rounded-2xl shadow-2xl hover:shadow-slate-500/50 bg-[length:200%_auto] border-2 border-slate-700 dark:border-slate-500"
+            className="inline-flex items-center gap-2.5 sm:gap-3 px-6 sm:px-8 md:px-10 py-4 sm:py-5 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700 text-white font-bold text-base sm:text-lg rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-slate-500/50 bg-[length:200%_auto] border-2 border-slate-700 dark:border-slate-500"
             whileHover={{ scale: 1.05, backgroundPosition: 'right center' }}
             whileTap={{ scale: 0.95 }}
           >
-            <Github className="w-6 h-6" />
+            <Github className="w-5 h-5 sm:w-6 sm:h-6" />
             <span>View All Repositories</span>
-            <ExternalLink className="w-5 h-5" />
+            <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" />
           </motion.a>
         </motion.div>
       </div>
