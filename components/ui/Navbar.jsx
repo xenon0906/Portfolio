@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -15,9 +16,12 @@ const navLinks = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
@@ -25,6 +29,19 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleTheme = () => {
+    const newTheme = resolvedTheme === "dark" ? "light" : "dark";
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        setTheme(newTheme);
+      });
+    } else {
+      setTheme(newTheme);
+    }
+  };
+
+  const isDark = resolvedTheme === "dark";
 
   return (
     <>
@@ -58,8 +75,31 @@ export default function Navbar() {
       <nav className="fixed top-0 left-0 right-0 z-40 md:hidden">
         <div className={`px-4 py-4 flex items-center justify-between transition-all duration-300
           ${scrolled ? 'glass' : ''}`}>
-          {/* Logo */}
-          <Link href="/">
+
+          {/* Left: Theme Toggle */}
+          <motion.button
+            onClick={toggleTheme}
+            className="p-2 glass rounded-lg"
+            whileTap={{ scale: 0.95 }}
+            aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+          >
+            {mounted && (
+              <motion.div
+                initial={false}
+                animate={{ rotate: isDark ? 0 : 180 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5 text-yellow-400" />
+                ) : (
+                  <Moon className="w-5 h-5 text-slate-700" />
+                )}
+              </motion.div>
+            )}
+          </motion.button>
+
+          {/* Center: Logo */}
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2">
             <motion.div
               className="text-xl font-black gradient-text"
               whileHover={{ scale: 1.05 }}
@@ -69,7 +109,7 @@ export default function Navbar() {
             </motion.div>
           </Link>
 
-          {/* Mobile Menu Button */}
+          {/* Right: Menu Button */}
           <motion.button
             onClick={() => setIsOpen(!isOpen)}
             className="p-2 glass rounded-lg"

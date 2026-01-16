@@ -28,7 +28,7 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="fixed top-6 right-6 z-50 w-12 h-12 rounded-full glass animate-pulse" />
+      <div className="fixed top-6 right-6 z-50 w-12 h-12 rounded-full glass animate-pulse hidden md:block" />
     );
   }
 
@@ -39,7 +39,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       className="fixed top-6 right-6 z-50 p-3 glass rounded-full shadow-lg
                  hover:scale-110 transition-transform focus:outline-none
-                 focus:ring-2 focus:ring-[var(--accent-primary)]"
+                 focus:ring-2 focus:ring-[var(--accent-primary)] hidden md:flex"
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       whileTap={{ scale: 0.9 }}
       initial={{ opacity: 0, y: -20 }}
