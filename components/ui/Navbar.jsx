@@ -73,7 +73,7 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-40 md:hidden">
-        <div className={`px-4 py-4 flex items-center justify-between transition-all duration-300
+        <div className={`px-4 py-3 flex items-center justify-between transition-all duration-300
           ${scrolled ? 'glass' : ''}`}>
 
           {/* Left: Theme Toggle */}
@@ -105,7 +105,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              SK.
+              SK
             </motion.div>
           </Link>
 

@@ -99,7 +99,7 @@ function HeroSection() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <motion.a
-            href="#github"
+            href="/projects"
             className="px-8 py-4 bg-[var(--accent-primary)] text-white font-bold rounded-full
                      hover:scale-105 transition-transform inline-flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
