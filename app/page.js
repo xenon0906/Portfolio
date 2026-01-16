@@ -18,14 +18,14 @@ const ActiveBackground = dynamic(
   { ssr: false, loading: () => <div className="fixed inset-0 bg-[var(--bg-color)]" /> }
 );
 
-// Animation variants
+// Animation variants - optimized for speed
 const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.25, ease: "easeOut" } }
 };
 
 const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } }
+  visible: { transition: { staggerChildren: 0.05 } }
 };
 
 export default function Home() {
@@ -59,7 +59,7 @@ export default function Home() {
           className="min-h-screen selection:bg-[var(--accent-primary)]/30"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.2 }}
         >
           <ActiveBackground />
           <Navbar />
@@ -82,9 +82,9 @@ function HeroSection() {
   return (
     <section className="min-h-screen flex flex-col justify-center items-center text-center px-4 relative z-10 pt-20">
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.3 }}
       >
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black my-6 tracking-tight">
           SIDDHANTH <br />
@@ -98,15 +98,13 @@ function HeroSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <motion.a
+          <a
             href="/projects"
             className="px-8 py-4 bg-[var(--accent-primary)] text-white font-bold rounded-full
-                     hover:scale-105 transition-transform inline-flex items-center gap-2"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+                     hover:scale-105 active:scale-95 transition-transform duration-150 inline-flex items-center gap-2"
           >
             View My Work <ArrowRight size={20} />
-          </motion.a>
+          </a>
 
           <div className="flex gap-3">
             <SocialBtn href="https://github.com/xenon0906" icon={<Github />} />
@@ -265,8 +263,7 @@ function ExperienceSection() {
             <motion.div
               key={i}
               variants={fadeInUp}
-              whileHover={{ y: -5 }}
-              className="glass-card p-6"
+              className="glass-card p-6 hover:-translate-y-1 transition-transform duration-150"
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 rounded-xl bg-[var(--accent-primary)]/10">
@@ -350,8 +347,7 @@ function ServicesSection() {
             <motion.div
               key={i}
               variants={fadeInUp}
-              whileHover={{ y: -10 }}
-              className="glass-card p-8 hover:border-[var(--accent-primary)] transition-colors cursor-default"
+              className="glass-card p-8 hover:border-[var(--accent-primary)] hover:-translate-y-2 transition-all duration-150 cursor-default"
             >
               <div className="text-[var(--accent-primary)] mb-4">{service.icon}</div>
               <h3 className="text-xl font-bold mb-2">{service.title}</h3>
@@ -467,8 +463,7 @@ function ContactSection() {
               target="_blank"
               rel="noopener noreferrer"
               variants={fadeInUp}
-              whileHover={{ scale: 1.02 }}
-              className="glass-card p-6 flex items-center gap-4 group"
+              className="glass-card p-6 flex items-center gap-4 group hover:scale-[1.02] transition-transform duration-150"
             >
               <div className="p-3 rounded-xl bg-[var(--accent-primary)]/10 text-[var(--accent-primary)]
                             group-hover:bg-[var(--accent-primary)] group-hover:text-white transition-colors">
@@ -495,14 +490,12 @@ function ContactSection() {
 
 // ============ SOCIAL BUTTON ============
 const SocialBtn = ({ href, icon }) => (
-  <motion.a
+  <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="p-3 rounded-full glass hover:scale-110 transition-transform"
-    whileHover={{ scale: 1.1 }}
-    whileTap={{ scale: 0.9 }}
+    className="p-3 rounded-full glass hover:scale-110 active:scale-95 transition-transform duration-150"
   >
     {icon}
-  </motion.a>
+  </a>
 );

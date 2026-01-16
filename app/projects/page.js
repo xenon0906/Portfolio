@@ -26,12 +26,12 @@ const GitHubStats = dynamic(
 );
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.25, ease: "easeOut" } }
 };
 
 const stagger = {
-  visible: { transition: { staggerChildren: 0.1 } }
+  visible: { transition: { staggerChildren: 0.05 } }
 };
 
 // Featured Projects Data
@@ -253,8 +253,7 @@ export default function ProjectsPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   variants={fadeInUp}
-                  whileHover={{ y: -5 }}
-                  className="glass-card p-6 group"
+                  className="glass-card p-6 group hover:-translate-y-1 transition-transform duration-150"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <Code2 className="w-8 h-8 opacity-50 group-hover:text-[var(--accent-primary)] transition-colors" />

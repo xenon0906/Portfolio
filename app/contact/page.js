@@ -72,9 +72,9 @@ export default function Contact() {
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-32 grid lg:grid-cols-2 gap-16 items-center min-h-screen">
         {/* Left: Info */}
         <motion.div
-          initial={{ x: -50, opacity: 0 }}
+          initial={{ x: -30, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         >
           <h1 className="text-5xl md:text-7xl font-black mb-8">
             Let's <br />
@@ -86,27 +86,26 @@ export default function Contact() {
 
           <div className="flex flex-wrap gap-4">
             {socials.map((social, index) => (
-              <motion.a
+              <a
                 key={index}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-4 rounded-2xl glass hover:scale-110 transition-transform flex items-center gap-3 group"
-                whileHover={{ y: -5 }}
+                className="p-4 rounded-2xl glass hover:scale-105 hover:-translate-y-1 transition-all duration-150 flex items-center gap-3 group"
               >
                 <span className="text-[var(--accent-primary)]">{social.icon}</span>
                 <span className="text-sm font-medium">{social.label}</span>
                 <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-50 transition-opacity" />
-              </motion.a>
+              </a>
             ))}
           </div>
         </motion.div>
 
         {/* Right: Form */}
         <motion.div
-          initial={{ x: 50, opacity: 0 }}
+          initial={{ x: 30, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.25, ease: "easeOut", delay: 0.1 }}
           className="glass-card p-8"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -160,14 +159,12 @@ export default function Contact() {
               />
             </div>
 
-            <motion.button
+            <button
               type="submit"
               disabled={isSubmitting}
               className="w-full py-4 bg-[var(--accent-primary)] text-white font-bold rounded-xl
-                       hover:opacity-90 transition-opacity flex justify-center items-center gap-2
+                       hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 flex justify-center items-center gap-2
                        disabled:opacity-50 disabled:cursor-not-allowed"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
             >
               {isSubmitting ? (
                 <>
@@ -179,7 +176,7 @@ export default function Contact() {
                   Send Message <Send size={20} />
                 </>
               )}
-            </motion.button>
+            </button>
           </form>
         </motion.div>
       </div>

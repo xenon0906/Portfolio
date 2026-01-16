@@ -29,7 +29,7 @@ html {
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  transition: background-color 0.2s ease-out, color 0.2s ease-out;
   overflow-x: hidden;
   font-family: 'Inter', system-ui, sans-serif;
 }
@@ -46,8 +46,8 @@ body {
   color: white;
 }
 
-/* Liquid Wipe Transition */
-::view-transition-group(root) { animation-duration: 0.7s; }
+/* Liquid Wipe Transition - Faster */
+::view-transition-group(root) { animation-duration: 0.4s; animation-timing-function: ease-out; }
 ::view-transition-new(root) { mix-blend-mode: normal; }
 ::view-transition-old(root) { mix-blend-mode: normal; }
 
@@ -200,4 +200,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/* Hardware acceleration for smooth animations */
+.glass-card,
+button,
+a {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Fast click response on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth page navigation */
+html {
+  scroll-padding-top: 100px;
 }

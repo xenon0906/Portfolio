@@ -46,12 +46,9 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Navigation */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, type: "spring" }}
+      <nav
         className={`fixed top-6 left-1/2 -translate-x-1/2 z-40 hidden md:flex
-          glass rounded-full px-6 py-3 shadow-2xl transition-all duration-300
+          glass rounded-full px-6 py-3 shadow-2xl transition-all duration-150
           ${scrolled ? 'backdrop-blur-xl' : ''}`}
       >
         <div className="flex items-center gap-6">
@@ -59,7 +56,7 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`text-sm font-bold transition-all duration-300
+              className={`text-sm font-bold transition-all duration-150
                 ${pathname === link.href
                   ? 'text-[var(--accent-primary)]'
                   : 'opacity-60 hover:opacity-100'
@@ -69,34 +66,29 @@ export default function Navbar() {
             </Link>
           ))}
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-40 md:hidden">
-        <div className={`px-4 py-3 flex items-center justify-between transition-all duration-300
+        <div className={`px-4 py-3 flex items-center justify-between transition-all duration-150
           ${scrolled ? 'glass' : ''}`}>
 
           {/* Left: Theme Toggle */}
-          <motion.button
+          <button
             onClick={toggleTheme}
-            className="p-2 glass rounded-lg"
-            whileTap={{ scale: 0.95 }}
+            className="p-2 glass rounded-lg transition-colors duration-150"
             aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
           >
             {mounted && (
-              <motion.div
-                initial={false}
-                animate={{ rotate: isDark ? 0 : 180 }}
-                transition={{ duration: 0.3 }}
-              >
+              <div className="transition-transform duration-150">
                 {isDark ? (
                   <Sun className="w-5 h-5 text-yellow-400" />
                 ) : (
                   <Moon className="w-5 h-5 text-slate-700" />
                 )}
-              </motion.div>
+              </div>
             )}
-          </motion.button>
+          </button>
 
           {/* Center: Logo */}
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 top-5">
@@ -106,13 +98,12 @@ export default function Navbar() {
           </Link>
 
           {/* Right: Menu Button */}
-          <motion.button
+          <button
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 glass rounded-lg"
-            whileTap={{ scale: 0.95 }}
+            className="p-2 glass rounded-lg transition-colors duration-150"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </motion.button>
+          </button>
         </div>
 
         {/* Mobile Menu */}
@@ -122,6 +113,7 @@ export default function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.15 }}
               className="overflow-hidden glass border-t border-[var(--grid-color)]"
             >
               <div className="py-4 px-4 space-y-1">
@@ -130,7 +122,7 @@ export default function Navbar() {
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`block py-3 px-4 text-base font-medium rounded-xl transition-colors
+                    className={`block py-3 px-4 text-base font-medium rounded-xl transition-colors duration-150
                       ${pathname === link.href
                         ? 'text-[var(--accent-primary)] bg-[var(--accent-primary)]/10'
                         : 'opacity-60 hover:opacity-100 hover:bg-[var(--grid-color)]'
