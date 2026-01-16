@@ -1,0 +1,113 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+
+const navLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'Projects', href: '/projects' },
+  { name: 'Contact', href: '/contact' },
+];
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      {/* Desktop Navigation */}
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, type: "spring" }}
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-40 hidden md:flex
+          glass rounded-full px-6 py-3 shadow-2xl transition-all duration-300
+          ${scrolled ? 'backdrop-blur-xl' : ''}`}
+      >
+        <div className="flex items-center gap-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`text-sm font-bold transition-all duration-300
+                ${pathname === link.href
+                  ? 'text-[var(--accent-primary)]'
+                  : 'opacity-60 hover:opacity-100'
+                }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+      </motion.nav>
+
+      {/* Mobile Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-40 md:hidden">
+        <div className={`px-4 py-4 flex items-center justify-between transition-all duration-300
+          ${scrolled ? 'glass' : ''}`}>
+          {/* Logo */}
+          <Link href="/">
+            <motion.div
+              className="text-xl font-black gradient-text"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              SK.
+            </motion.div>
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 glass rounded-lg"
+            whileTap={{ scale: 0.95 }}
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </motion.button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden glass border-t border-[var(--grid-color)]"
+            >
+              <div className="py-4 px-4 space-y-1">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={`block py-3 px-4 text-base font-medium rounded-xl transition-colors
+                      ${pathname === link.href
+                        ? 'text-[var(--accent-primary)] bg-[var(--accent-primary)]/10'
+                        : 'opacity-60 hover:opacity-100 hover:bg-[var(--grid-color)]'
+                      }`}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </>
+  );
+}

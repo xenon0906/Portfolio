@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* LIGHT MODE (Liquid Digital) */
+  --bg-color: #f0f2f5;
+  --text-color: #0f172a;
+  --card-bg: rgba(255, 255, 255, 0.6);
+  --accent-primary: #2563eb;   /* Blue */
+  --accent-secondary: #06b6d4; /* Cyan */
+  --grid-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  /* DARK MODE (Veo Cyber) */
+  --bg-color: #050505;
+  --text-color: #ffffff;
+  --card-bg: rgba(10, 10, 10, 0.6);
+  --accent-primary: #00f0ff;   /* Neon Cyan */
+  --accent-secondary: #bd00ff; /* Neon Purple */
+  --grid-color: rgba(255, 255, 255, 0.05);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-color); }
+::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { opacity: 0.8; }
+
+/* Selection */
+::selection {
+  background-color: var(--accent-primary);
+  color: white;
+}
+
+/* Liquid Wipe Transition */
+::view-transition-group(root) { animation-duration: 0.7s; }
+::view-transition-new(root) { mix-blend-mode: normal; }
+::view-transition-old(root) { mix-blend-mode: normal; }
+
+::view-transition-new(root) { animation-name: reveal-light; }
+::view-transition-old(root) { animation: none; z-index: -1; }
+.dark::view-transition-new(root) { animation-name: reveal-dark; }
+.dark::view-transition-old(root) { animation: none; z-index: -1; }
+
+@keyframes reveal-dark {
+  from { clip-path: circle(0% at 50% 50%); }
+  to { clip-path: circle(150% at 50% 50%); }
+}
+
+@keyframes reveal-light {
+  from { clip-path: circle(0% at 50% 50%); }
+  to { clip-path: circle(150% at 50% 50%); }
+}
+
+/* Glass Morphism */
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--grid-color);
+}
+
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--grid-color);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow Effects */
+.glow {
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 30%, transparent);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 50%, transparent);
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Spin Reverse Animation */
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 1s linear infinite;
+}
+
+/* Canvas Fix */
+canvas {
+  display: block;
+}
+
+/* Section Styles */
+.section {
+  min-height: 100vh;
+  padding: 6rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .section {
+    padding: 8rem 2rem;
+  }
+}
+
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+
+  .glass-card {
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Better touch targets for mobile */
+  button, a, input, textarea {
+    min-height: 44px;
+  }
+
+  /* Prevent text size adjust on orientation change */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Touch-friendly interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  .glass-card:hover,
+  button:hover,
+  a:hover {
+    transform: none !important;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* Improve text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

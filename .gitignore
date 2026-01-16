@@ -1,33 +1,46 @@
+# Dependencies
+node_modules
+
+# Next.js
+.next
+out
+
+# Production
+build
+
 # Logs
-logs
 *.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
-# Environment variables
-.env
-.env.local
-.env.production
+# Vercel
+.vercel
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# AI Code Assistants
-.claude
-.cursor
+# Windows reserved names
+nul
+NUL
+con
+CON
+aux
+AUX

@@ -1,14 +1,10 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
+  "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
+  "regions": ["iad1"],
   "headers": [
     {
       "source": "/(.*)",
@@ -24,11 +20,15 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         }
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/fonts/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -37,7 +37,7 @@
       ]
     },
     {
-      "source": "/fonts/(.*)",
+      "source": "/(.*).svg",
       "headers": [
         {
           "key": "Cache-Control",
