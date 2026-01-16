@@ -99,14 +99,10 @@ export default function Navbar() {
           </motion.button>
 
           {/* Center: Logo */}
-          <Link href="/" className="absolute left-1/2 -translate-x-1/2 top-4">
-            <motion.div
-              className="text-xl font-black gradient-text"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2 top-5">
+            <div className="text-2xl font-black gradient-text">
               SK
-            </motion.div>
+            </div>
           </Link>
 
           {/* Right: Menu Button */}
