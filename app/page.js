@@ -145,9 +145,8 @@ function AboutSection() {
               </div>
             </div>
             <p className="opacity-70 leading-relaxed">
-              I'm always eager to learn and contribute to the tech community, focusing on solving
-              complex problems and building innovative solutions. Currently exploring advanced
-              machine learning techniques and their real-world applications.
+              I design and build digital experiences that are fast, scalable, and user-focused. With hands-on development experience across web applications, mobile apps, and AI-driven solutions. My work spans full-stack web development, cross-platform app development, and integrating machine learning models into real-world use cases. My projects prioritize impact, efficiency, and long-term scalability.
+
             </p>
           </motion.div>
 
@@ -205,7 +204,13 @@ function ExperienceSection() {
 
   const experiences = [
     {
-      role: "Member",
+      role: "Head of Product",
+      company: "Snapgo Service Pvt. Ltd.",
+      period: "Aug 2025- Present",
+      type: "Part-time"
+    },
+    {
+      role: "Founding Member",
       company: "E-Cell Sharda",
       period: "Dec 2024 - Present",
       type: "Part-time"
@@ -216,13 +221,6 @@ function ExperienceSection() {
       period: "Oct 2024 - Present",
       type: "Part-time",
       location: "Mumbai (Hybrid)"
-    },
-    {
-      role: "Minor in AI",
-      company: "IIT Ropar",
-      period: "Aug 2024 - Present",
-      type: "Trainee",
-      location: "Ropar (Hybrid)"
     },
     {
       role: "Web Developer",
@@ -435,7 +433,7 @@ function ContactSection() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const contacts = [
-    { icon: <Mail />, label: "Email", value: "siddhanthkunwar@gmail.com", href: "mailto:siddhanthkunwar@gmail.com" },
+    { icon: <Mail />, label: "Email", value: "siddhanthkunwar2015@gmail.com", href: "mailto:siddhanthkunwar2015@gmail.com" },
     { icon: <Github />, label: "GitHub", value: "@xenon0906", href: "https://github.com/xenon0906" },
     { icon: <Linkedin />, label: "LinkedIn", value: "Siddhanth Kunwar", href: "https://linkedin.com/in/syd090605" },
     { icon: <TreePine />, label: "Linktree", value: "All Links", href: "https://linktr.ee/siddhanthkunwar" },
@@ -481,7 +479,7 @@ function ContactSection() {
         {/* Footer */}
         <motion.div variants={fadeInUp} className="mt-20 text-center">
           <p className="opacity-50 text-sm">Designed & Built by Siddhanth Kunwar</p>
-          <p className="opacity-30 text-xs mt-2">2024 All rights reserved</p>
+          <p className="opacity-30 text-xs mt-2">2026 All rights reserved</p>
         </motion.div>
       </motion.div>
     </section>
